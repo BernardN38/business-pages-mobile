@@ -14,7 +14,6 @@ function ControlledCarousel() {
       src: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
     },
   ]);
-  console.log(setItems)
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
   };

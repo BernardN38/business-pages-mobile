@@ -1,10 +1,21 @@
-import * as React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Reviews from "./Reviews";
+import Services from "./Services"
+import BusinessInfo from "./BusinessInfo"
+
+
+
+
+const tabs = {
+  0:<Reviews />,
+  1: <Services />,
+  2: <BusinessInfo />,
+}
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -39,10 +50,11 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    console.log(event,newValue)
   };
 
   return (
@@ -70,7 +82,7 @@ export default function BasicTabs() {
           business info goes here
         </TabPanel>
       </Box>
-      {value === 0 ? <Reviews /> : "none"}
+      {tabs[value]}
     </div>
   );
 }
