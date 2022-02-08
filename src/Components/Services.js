@@ -19,12 +19,12 @@ function Services() {
       }}
       subheader={<li />}
     >
-      {servicesList.map((service,idx) => (
-        <li key={`section-${idx}`}>
+      {servicesList.map((service) => (
+        <li key={`section-${service.category}`}>
           <ul>
-            <ListSubheader>{service.category}</ListSubheader>
+            <ListSubheader>{`${service.category}`}</ListSubheader>
             {service.subCategories.map((item) => (
-              <ListItem key={`item-${idx}-${item}`}>
+              <ListItem key={`item-${service.category}-${item}`}>
                 <ListItemText primary={`${item}`} />
               </ListItem>
             ))}

@@ -76,10 +76,10 @@ export default function BasicTabs() {
           User Reviews
         </TabPanel>
         <TabPanel value={value} index={1}>
-          list goes here
+          Services
         </TabPanel>
         <TabPanel value={value} index={2}>
-          business info goes here
+          Business Info
         </TabPanel>
       </Box>
       {tabs[value]}
