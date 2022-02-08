@@ -9,11 +9,12 @@ import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import "../css/businessheader.css"
 function BusinessHeader() {
-  const [value, setValue] = useState("one");
-  const [ratingData, setRatingData] = useState({ rating: 4, ratingCount: 104 });
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const [value, setValue] = useState("one");
+  const [ratingData] = useState({ rating: 4, ratingCount: 104 });
+  // const handleChange = (event, newValue) => {
+  //   console.log(event)
+  //   setValue(newValue);
+  // };
   return (
     <Container className="p-1">
       <div className="business-header-main">
