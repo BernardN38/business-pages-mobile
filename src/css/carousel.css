@@ -1,0 +1,20 @@
+.carousel-container {
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+
+}
+
+.carousel-img img {
+  width: 100%;
+  height: auto;
+}
+
+.fadeOut {
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+ }
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;} 
+ } 
