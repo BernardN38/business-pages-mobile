@@ -5,7 +5,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Reviews from "./Reviews";
-import Services from "./Services"
+import BusinessOfferings from "./BusinessOfferings"
 import BusinessInfo from "./BusinessInfo"
 
 
@@ -13,7 +13,7 @@ import BusinessInfo from "./BusinessInfo"
 
 const tabs = {
   0:<Reviews />,
-  1: <Services />,
+  1: <BusinessOfferings />,
   2: <BusinessInfo />,
 }
 function TabPanel(props) {
@@ -72,7 +72,7 @@ export default function BasicTabs() {
             <Tab label="Info" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
+        {/* <TabPanel value={value} index={0}>
           User Reviews
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -80,7 +80,7 @@ export default function BasicTabs() {
         </TabPanel>
         <TabPanel value={value} index={2}>
           Business Info
-        </TabPanel>
+        </TabPanel> */}
       </Box>
       {tabs[value]}
     </div>
