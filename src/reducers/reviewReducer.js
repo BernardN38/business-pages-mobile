@@ -1,6 +1,6 @@
 const initState = {
     reviewList: [
-     
+
     ]
 }
 
@@ -21,6 +21,7 @@ const reviewReducer = (state = initState, action) => {
             }
         case 'SET_REVIEWS':
             return {
+                ...state,
                 reviewList: [...action.payload]
             }
         default:

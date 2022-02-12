@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,9 +7,10 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-// import NavMenu from "./NavMenu"
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { useNavigate, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -54,12 +55,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Narbar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const user = useSelector((state) => state.user.user)
+  let navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (e) => {
     setAnchorEl(null);
   };
 
@@ -107,9 +110,12 @@ export default function Narbar() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem component={Link}
+          to="/" onClick={handleClose}>Home</MenuItem>
+        <MenuItem onClick={handleClose} >My account</MenuItem>
+        {user.token ? <MenuItem component={Link}
+          to="/logout" onClick={handleClose} >Logout</MenuItem> : <MenuItem component={Link}
+            to="/login" onClick={handleClose} >Login</MenuItem>}
       </Menu>
     </AppBar>
   );

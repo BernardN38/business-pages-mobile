@@ -10,7 +10,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import Stack from "@mui/material/Stack";
 function OfferingCard({offering}) {
   const {name,price,image_url,description} = offering;
-  console.info(image_url)
+  
   return (
     <Card className='border border-dark m-1'>
       <CardMedia

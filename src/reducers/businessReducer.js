@@ -1,6 +1,6 @@
 const initState = {
   business: {
-    business_id:1
+    business_id: 1
   }
 }
 
