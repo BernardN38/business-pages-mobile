@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -11,11 +11,7 @@ import BusinessInfo from "./BusinessInfo"
 
 
 
-const tabs = {
-  0:<Reviews />,
-  1: <BusinessOfferings />,
-  2: <BusinessInfo />,
-}
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -51,10 +47,13 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [value, setValue] = useState(0);
-
+  const tabs = {
+    0: <Reviews />,
+    1: <BusinessOfferings />,
+    2: <BusinessInfo />,
+  }
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    console.log(event,newValue)
   };
 
   return (

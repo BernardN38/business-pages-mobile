@@ -1,5 +1,4 @@
 import * as React from "react";
-// import Box from '@mui/material/Box';
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -7,18 +6,10 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-// const bull = (
-//   <Box
-//     component="span"
-//     sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-//   >
-//     •
-//   </Box>
-// );
 
-export default function Review({ reviewBody, username }) {
+
+export default function Review({ reviewBody, username , title, rating}) {
   return (
     <div className="p-2">
       <Card sx={{ minWidth: 275 }} className="border border-dark">
@@ -31,7 +22,7 @@ export default function Review({ reviewBody, username }) {
           </Stack>
           <Rating
             name="read-only"
-            value={Math.floor(Math.random() * 5)}
+            value={rating}
             readOnly
           />
           <Typography
@@ -39,7 +30,7 @@ export default function Review({ reviewBody, username }) {
             sx={{ fontSize: 14 }}
             color="text.dark"
           >
-            Great Experience!
+           {title}
           </Typography>
           
           <Typography sx={{ fontSize: 14 }} color="text.secondary">

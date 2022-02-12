@@ -8,26 +8,28 @@ import Typography from "@mui/material/Typography";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import Stack from "@mui/material/Stack";
-function OfferingCard({title,price,url,description}) {
+function OfferingCard({offering}) {
+  const {name,price,image_url,description} = offering;
+  console.info(image_url)
   return (
     <Card className='border border-dark m-1'>
       <CardMedia
         component="img"
         height={150}
-        image="https://media.istockphoto.com/photos/fresh-homemade-pizza-margherita-picture-id1278998606?s=612x612"
+        image={image_url}
       />
       <CardContent>
         <Stack direction="row" className="d-flex align-items-center justify-content-between">
           <Typography variant="h5" component="div" className='mr-5'>
-            12" Pizza
+            {name}
           </Typography>
 
           <Badge color="secondary" badgeContent={0}>
-            $12.99
+            ${price}
           </Badge>
         </Stack>
         <Typography variant="body2" color="text.secondary">
-          Delicious 12 inch pizza with your choice of toppings.
+          {description}
         </Typography>
       </CardContent>
       {/* <CardActions>

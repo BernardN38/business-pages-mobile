@@ -62,10 +62,10 @@ export default function Narbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
- 
+
   return (
-    <AppBar position="sticky" isOpen="true">
-      
+    <AppBar position="sticky" >
+
       <Toolbar>
         <IconButton
           size="large"

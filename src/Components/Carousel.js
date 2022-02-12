@@ -20,9 +20,9 @@ function ControlledCarousel() {
 
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}   >
-      {items.map((item) => {
+      {items.map((item, idx) => {
         return (
-          <Carousel.Item>
+          <Carousel.Item key={idx} >
             <img
               className="d-block w-100"
               src={item.src}

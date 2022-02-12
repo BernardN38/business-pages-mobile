@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
@@ -7,44 +7,50 @@ import Rating from "@mui/material/Rating";
 import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import "../css/businessheader.css"
+import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux';
+import "../css/businessheader.css";
 function BusinessHeader() {
-  // const [value, setValue] = useState("one");
-  const [ratingData] = useState({ rating: 4, ratingCount: 104 });
-  // const handleChange = (event, newValue) => {
-  //   console.log(event)
-  //   setValue(newValue);
-  // };
+
+  const business = useSelector((state) => state.business.business)
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    const getBusiness = async () => {
+      const business_req = await axios.get(`http://localhost:5000/api/business/${business.business_id}`)
+      dispatch({type:'SET_BUSINESS', payload: business_req.data})
+    }
+    getBusiness()
+  }, [])
   return (
     <Container className="p-1">
       <div className="business-header-main">
         <Stack direction="row" spacing={2}>
-          <Avatar src="https://media.istockphoto.com/photos/pizzeria-sign-in-rome-picture-id1189932458?s=612x612"></Avatar>
+          <Avatar src={business.profile_image_url}></Avatar>
           <div>
-            <h5>Business Name</h5>
+            <h5>{business.name}</h5>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              {business.description||"Welcome to Our Page"}
             </p>
           </div>
         </Stack>
         <Stack direction="row" spacing={3} className="h-75">
           <Box className="d-flex justify-content-center align-items-center">
-            <Rating name="read-only" value={ratingData.rating} readOnly />
+            <Rating name="read-only" value={+business.rating} readOnly />
             <Chip
-              label={`${ratingData.ratingCount} Ratings`}
+              label={`${100} Ratings`}
               variant="outlined"
             />
           </Box>
           <Box>
-            <Button>
+            {business.phone_number ? (<Button>
               <PhoneInTalkIcon>Call</PhoneInTalkIcon>
               <span>Call</span>
-            </Button>
+            </Button>) : ''}
           </Box>
         </Stack>
       </div>
-    
+
     </Container>
   );
 }
