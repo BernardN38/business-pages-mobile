@@ -1,8 +1,24 @@
-from flask import jsonify,request, Blueprint
+from urllib import response
+from flask import jsonify, make_response,request, Blueprint
 from models import Business, Offering, Review, User, BusinessReview,db
-from auth_middleware import token_required
+from auth_middleware import token_required,require_admin
+from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
 resources = Blueprint('resources', __name__)
 
+CORS(resources,  supports_credentials=True)
+
+
+# @resources.after_request
+# def after_request(response):
+#     print('after requestcheck ')
+#     response.headers["Access-Control-Allow-Origin"] = "localhost:3000"
+#     response.headers['Access-Control-Allow-Credentials'] = 'true'
+#     response.headers['Access-Control-Allow-Methods'] = "PATCH"
+#     print(response)
+#     return response
 #  create business
 @resources.post("/api/business")
 def create_business():
@@ -137,26 +153,6 @@ def delete_business_offering(id):
         "message": f"delete of business offering successful with id: {id}"}
     return jsonify(success_resp)
 
-# may use later
-# @app.delete("/api/business-offering")
-# def get_business_offering_test(id):
-#     business = Business.query.get(id)
-#     serached_offering_idx = None
-#     for idx, offering in enumerate(business.business_offerings):
-#         if offering.id == 1:
-#             serached_offering_idx = idx
-
-#     if serached_offering_idx != None:
-#         print("attempting delete")
-#         business.business_offerings.pop(serached_offering_idx)
-#         db.session.commit()
-
-#     return jsonify(business.serialize)
-
-# user CRUD
-# create user
-
-
 @resources.post('/api/user')
 def create_user():
     new_user = User()
@@ -178,19 +174,38 @@ def get_all_users():
 
 
 @resources.get('/api/user/<id>')
-def get_single_user(id):
+@token_required
+def get_single_user(current_user,id):
+    print(id)
+    print(current_user)
+    if current_user.id != id and current_user.is_admin != True:
+        return jsonify('unathorized')
     user = User.query.get(id)
-    return jsonify(user.serialize)
+    resp = make_response(user.serialize)
+    return resp
 
 # update single user
 
 
-@resources.patch('/api/user/<id>')
-def update_user(id):
-    existing_user = User.query.get(id)
-    for k, v in request.json.items():
-        setattr(existing_user, k, v)
-    db.session.commit()
+@resources.post('/api/user/<id>')
+@token_required
+def update_user(current_user,id):
+    excluded = ['password', 'username', 'is_admin']
+    existing_user = User.query.get(current_user.id)
+    password = request.form['password']
+    for k, v in request.form.items():
+        if k in excluded:
+            print(k)
+            continue
+        else:
+            setattr(existing_user, k, v)
+    if existing_user.verify_password(password):
+        print('password verified')
+        db.session.commit()
+    else:
+        print('inccorect password')
+        db.session.rollback()
+    print(existing_user.last_name)
     return jsonify(existing_user.serialize)
 
 # delete single user
@@ -209,16 +224,27 @@ def delete_user(id):
 @token_required
 def create_review(currentuser,*args):
     id = args[1]['id']
-
     new_review = Review()
+
     for k, v in request.json.items():
         setattr(new_review, k, v)
     new_review.user_id = currentuser.id
+
     db.session.add(new_review)
     db.session.commit()
+
     review = BusinessReview(user_id=currentuser.id,business_id=id,review_id=new_review.review_id)
-    print(review)
-    
     db.session.add(review)
     db.session.commit()
     return jsonify(review.serialize)
+
+@resources.get('/api/ranks')
+def get_ranks():
+    from collections import defaultdict
+    users = User.query.order_by(User.score.desc()).all()
+    ranks = defaultdict(int)
+    rank = 1
+    for user in users:
+        ranks[user.id] = rank
+        rank +=1
+    return jsonify(ranks)

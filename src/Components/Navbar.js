@@ -7,10 +7,10 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { useNavigate, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import {  Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -57,8 +57,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Narbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const user = useSelector((state) => state.user.user)
-  let navigate = useNavigate();
+  const user = useSelector((state) => state.user.user);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -67,8 +67,7 @@ export default function Narbar() {
   };
 
   return (
-    <AppBar position="sticky" >
-
+    <AppBar position="sticky">
       <Toolbar>
         <IconButton
           size="large"
@@ -77,8 +76,8 @@ export default function Narbar() {
           aria-label="open drawer"
           sx={{ mr: 2 }}
           id="basic-button"
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
         >
           <MenuIcon />
@@ -107,15 +106,25 @@ export default function Narbar() {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem component={Link}
-          to="/" onClick={handleClose}>Home</MenuItem>
-        <MenuItem onClick={handleClose} >My account</MenuItem>
-        {user.token ? <MenuItem component={Link}
-          to="/logout" onClick={handleClose} >Logout</MenuItem> : <MenuItem component={Link}
-            to="/login" onClick={handleClose} >Login</MenuItem>}
+        <MenuItem component={Link} to="/" onClick={handleClose}>
+          Home
+        </MenuItem>
+        <MenuItem  component={Link} to="/profile"  onClick={handleClose}>My account</MenuItem>
+        <MenuItem component={Link} to="/login" onClick={handleClose}>
+            Login
+          </MenuItem>
+        {/* {user.token ? (
+          <MenuItem component={Link} to="/logout" onClick={handleClose}>
+            Logout
+          </MenuItem>
+        ) : (
+          <MenuItem component={Link} to="/login" onClick={handleClose}>
+            Login
+          </MenuItem>
+        )} */}
       </Menu>
     </AppBar>
   );

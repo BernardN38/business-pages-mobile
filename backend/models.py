@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 
@@ -19,7 +19,6 @@ business_reviews = db.Table('business_reviews',
                                 'review.review_id')),
                             )
 
-
 class Business(db.Model):
     __tablename__ = 'business'
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +27,7 @@ class Business(db.Model):
     phone_number = db.Column(db.String(11))
     profile_image_url = db.Column(db.String(2048))
     rating = db.Column(db.Integer)
+    address = db.Column(db.String(100))
     business_offerings = db.relationship('Offering', secondary=business_offerings, lazy="joined",
                                          backref=db.backref('Business', lazy=True))
     business_reviews = db.relationship('Review', secondary=business_reviews, lazy='joined',
@@ -46,6 +46,7 @@ class Business(db.Model):
             'phone_number': self.phone_number,
             'profile_image_url': self.profile_image_url,
             'rating': self.rating,
+            'address':self.address,
             'business_offerings': [offering.serialize for offering in self.business_offerings if offering],
             'business_reviews': [review.serialize for review in self.business_reviews if review]
         }
@@ -110,9 +111,12 @@ class User(db.Model):
     profile_image_url = db.Column(db.String(2048), nullable=True)
     public_id = db.Column(db.String(50), unique=True)
     is_admin = db.Column(db.Boolean)
-
+    
     def __repr__(self):
         return f'<Name {self.username}>'
+
+    def verify_password(self, test_password):
+        return check_password_hash(self.password,test_password)
 
     @property
     def serialize(self):
@@ -124,7 +128,8 @@ class User(db.Model):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'score': self.score,
-            'profile_image_url': self.profile_image_url
+            'profile_image_url': self.profile_image_url,
+            'reviews': [review.serialize for review in BusinessReview.query.join(User, BusinessReview.user_id==self.id).all() if review]
         }
 
 
@@ -138,7 +143,7 @@ class BusinessReview(db.Model):
         'users.id'))
     review_id = db.Column('review_id', db.Integer, db.ForeignKey(
         'review.review_id'))
-
+    
     def __repr__(self):
         return f'<Name {self.review_id}>'
 

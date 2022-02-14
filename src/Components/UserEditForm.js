@@ -16,29 +16,28 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SimpleSnackbar from "./Snackbar";
-import {useAuth} from "../helpers.js/useAuth";
 const theme = createTheme();
 
-export default function LoginForm() {
+export default function UserEditForm() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: "http://localhost:5000/",
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
-    axios.post("http://localhost:5000/login", data).then((resp) => {
-      if (resp.status === 200) {
-        dispatch({ type: "SET_USER", payload: resp.data });
-        dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
-        login(()=>{
-          console.log('logging in')
-          navigate('/')
-        })
-      }
-    });
+    instance
+      .post(`http://localhost:5000/api/user/${user.token.user_id}`, data)
+      .then((resp) => {
+        if (resp.status === 200) {
+          console.log(resp.data, "code 200");
+        }
+      });
   };
 
   return (
@@ -53,11 +52,8 @@ export default function LoginForm() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "primary" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Edit Profile
           </Typography>
           <Box
             component="form"
@@ -67,6 +63,25 @@ export default function LoginForm() {
           >
             <TextField
               margin="normal"
+              fullWidth
+              id="firstName"
+              label="First Name"
+              name="first_name"
+              autoComplete="firstName"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              id="last_ame"
+              label="Last Name"
+              name="last_name"
+              autoComplete="last_name"
+              autoFocus
+            />
+            {/* <TextField
+          
+              margin="normal"
               required
               fullWidth
               id="username"
@@ -74,20 +89,16 @@ export default function LoginForm() {
               name="username"
               autoComplete="username"
               autoFocus
-            />
+            /> */}
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Password to comfirm changes"
               type="password"
               id="password"
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"
@@ -95,23 +106,10 @@ export default function LoginForm() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Submit
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
-        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
         <SimpleSnackbar
           success={loginSuccess}
           setLoginSuccess={setLoginSuccess}

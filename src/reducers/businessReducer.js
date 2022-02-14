@@ -1,5 +1,6 @@
 const initState = {
   business: {
+    name:'',
     business_id: 1
   }
 }
@@ -21,6 +22,7 @@ const businessReducer = (state = initState, action) => {
       //     }
       case 'SET_BUSINESS':
           return {
+            ...state,
               business: action.payload
           }
       default:

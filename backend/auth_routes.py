@@ -2,22 +2,23 @@ from flask import jsonify, request, Blueprint, make_response, Response
 from flask_cors import cross_origin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
-import uuid
-import jwt
 from models import User, db
 from auth_middleware import require_admin, token_required
 from keys import secret_key
-
+from flask_cors import CORS
+import uuid
+import jwt
 
 auth = Blueprint('auth', __name__)
+CORS(auth, supports_credentials=True)
 
 @auth.post('/login')
 def login():
     # creates dictionary of form data
     auth = request.form
-    print(request.cookies, request.headers)
+    print(request.cookies)
     if not auth or not auth.get('username') or not auth.get('password'):
-        # returns 401 if any email or / and password is missing
+        # returns 401 if any usernameor / and password is missing
         return make_response(
             'Could not verify',
             401,
@@ -25,7 +26,7 @@ def login():
         )
 
     user = User.query.filter_by(username=auth.get('username')).first()
-    print(user.is_admin)
+    
     if not user:
         # returns 401 if user does not exist
         return make_response(
@@ -33,6 +34,7 @@ def login():
             401,
             {'WWW-Authenticate': 'Basic realm ="User does not exist !!"'}
         )
+    print(user.is_admin)
     # verify user password
     if check_password_hash(user.password, auth.get('password')):
         # generates the JWT Token
@@ -42,7 +44,7 @@ def login():
             'exp': datetime.utcnow() + timedelta(hours=24)
         }, secret_key, algorithm="HS256")
         
-        resp =  make_response(jsonify({'token': jwt.decode(token, secret_key, algorithms="HS256")}), 201)
+        resp =  make_response(jsonify({'token': jwt.decode(token, secret_key, algorithms="HS256")}), 200)
         resp.set_cookie('Bearer', value =  token, httponly = True)
         return resp
     # returns 403 if password is wrong
