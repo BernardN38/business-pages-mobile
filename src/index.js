@@ -8,33 +8,28 @@ import UserProfile from "./Components/UserProfile";
 import UserEditForm from "./Components/UserEditForm";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, } from "react-redux";
 import { createStore } from "redux";
 import RequireAuth from "./Components/RequireAuth";
 import rootReducer from "./reducers/rootReducer";
 
 const store = createStore(rootReducer);
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route index element={<BusinessPage />} />
-            <Route path="/login" element={<LoginForm />} />
-
-            <Route
-              path="/profile"
-              element={
-                <RequireAuth>
-                  <UserProfile />
-                </RequireAuth>
-              }
-            />
-
-            <Route path="/profile/edit" element={<UserEditForm />} />
+      <RequireAuth>
+      <Routes>
+          <Route path="/" element={<BusinessPage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/profile" element={<UserProfile />} />
           </Route>
-        </Routes>
+        
+        <Route path="*" element={<BusinessPage />} />
+      </Routes>
+    </RequireAuth>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

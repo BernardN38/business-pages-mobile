@@ -33,10 +33,8 @@ export default function LoginForm() {
       if (resp.status === 200) {
         dispatch({ type: "SET_USER", payload: resp.data });
         dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
-        login(()=>{
-          console.log('logging in')
-          navigate('/')
-        })
+        navigate('/')
+        console.log(resp)
       }
     });
   };
