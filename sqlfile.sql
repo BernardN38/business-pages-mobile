@@ -32,6 +32,8 @@ CREATE TABLE public.business (
     profile_image_url character varying(2048),
     rating numeric,
     address character varying(100),
+    messaging_id integer NOT NULL,
+	CONSTRAINT "bussiness_pk" PRIMARY KEY ("id")
     CONSTRAINT business_rating_check CHECK ((rating < (6)::numeric))
 );
 
@@ -263,7 +265,9 @@ CREATE TABLE public.users (
     is_admin boolean DEFAULT false,
     public_id character varying(50),
     password character varying,
-    email character varying
+    email character varying,
+    "messaging_id" integer NOT NULL,
+	CONSTRAINT "users_pk" PRIMARY KEY ("id")
 );
 
 

@@ -1,4 +1,3 @@
-from pickle import FALSE
 from flask import request, jsonify
 from keys import secret_key
 import jwt
@@ -13,8 +12,8 @@ from flask_cors import cross_origin
 def token_required(f, *args, **kwargs):
     @wraps(f, *args, **kwargs)
     def decorated(*args, **kwargs):
+        print(request.cookies)
         token = request.cookies.get('Bearer')
-        print("token middleware",token)
 
         # return 401 if token is not passed
         if not token:
@@ -23,6 +22,7 @@ def token_required(f, *args, **kwargs):
         try:
             # decoding the payload to fetch the stored details
             data = jwt.decode(token, secret_key, algorithms="HS256")
+            print(data)
             current_user = User.query.get(data['user_id'])
         except:
             return jsonify({
@@ -34,16 +34,16 @@ def token_required(f, *args, **kwargs):
 
     return decorated
 
-def require_admin(f, *args,**kwargs):
-    
-    @wraps(f,*args, **kwargs)
+
+def require_admin(f, *args, **kwargs):
+
+    @wraps(f, *args, **kwargs)
     def decorated(*args, **kwargs):
         user = args[0]
         if not user.is_admin:
             return jsonify({
                 'message': 'unathorized'
             }), 401
-        return f(user,args)
-       
+        return f(user, args)
 
     return decorated

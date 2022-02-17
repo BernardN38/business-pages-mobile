@@ -19,6 +19,15 @@ business_reviews = db.Table('business_reviews',
                                 'review.review_id')),
                             )
 
+# user_direct_messages = db.Table('direct_messags',
+#                             db.Column('business_id', db.Integer, db.ForeignKey(
+#                                 'business.id')),
+#                             db.Column('user_id', db.Integer, db.ForeignKey(
+#                                 'users.id')),
+#                             db.Column('message_id', db.Integer, db.ForeignKey(
+#                                 'message.id')),
+#                             )
+
 class Business(db.Model):
     __tablename__ = 'business'
     id = db.Column(db.Integer, primary_key=True)
@@ -46,7 +55,7 @@ class Business(db.Model):
             'phone_number': self.phone_number,
             'profile_image_url': self.profile_image_url,
             'rating': self.rating,
-            'address':self.address,
+            'address': self.address,
             'business_offerings': [offering.serialize for offering in self.business_offerings if offering],
             'business_reviews': [review.serialize for review in self.business_reviews if review]
         }
@@ -111,12 +120,13 @@ class User(db.Model):
     profile_image_url = db.Column(db.String(2048), nullable=True)
     public_id = db.Column(db.String(50), unique=True)
     is_admin = db.Column(db.Boolean)
-    
+    messaging_id =db.Column('messaging_id', db.Integer, db.ForeignKey(
+        'messaging_ids.id'))
     def __repr__(self):
         return f'<Name {self.username}>'
 
     def verify_password(self, test_password):
-        return check_password_hash(self.password,test_password)
+        return check_password_hash(self.password, test_password)
 
     @property
     def serialize(self):
@@ -129,13 +139,13 @@ class User(db.Model):
             'last_name': self.last_name,
             'score': self.score,
             'profile_image_url': self.profile_image_url,
-            'reviews': [review.serialize for review in BusinessReview.query.join(User, BusinessReview.user_id==self.id).all() if review]
+            'reviews': [review.serialize for review in BusinessReview.query.join(User, BusinessReview.user_id == self.id).all() if review]
         }
 
 
 class BusinessReview(db.Model):
     __tablename__ = 'business_reviews'
-    __table_args__ = {'extend_existing': True} 
+    __table_args__ = {'extend_existing': True}
     id = db.Column('id', db.Integer, primary_key=True)
     business_id = db.Column('business_id', db.Integer, db.ForeignKey(
         'business.id'))
@@ -143,7 +153,7 @@ class BusinessReview(db.Model):
         'users.id'))
     review_id = db.Column('review_id', db.Integer, db.ForeignKey(
         'review.review_id'))
-    
+
     def __repr__(self):
         return f'<Name {self.review_id}>'
 
@@ -152,6 +162,67 @@ class BusinessReview(db.Model):
         """Return object data in serial format"""
         return {
             'user_id': self.user_id,
-            'busines_id':self.business_id,
-            'review_id':self.review_id
-        }   
+            'busines_id': self.business_id,
+            'review_id': self.review_id
+        }
+
+
+class Message(db.Model):
+    __tablename__ = 'message'
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String(30))
+    body = db.Column(db.String(255))
+
+    @property
+    def serialize(self):
+        """Return object data in serial format"""
+        return {
+            'id': self.id,
+            'subject': self.subject,
+            'body': self.body
+        }
+
+
+class DirectMessages(db.Model):
+    __tablename__ = 'direct_messages'
+    id = db.Column(db.Integer, primary_key=True)
+    message_id = db.Column('message_id', db.Integer, db.ForeignKey(
+        'message.id'))
+    sender_id = db.Column('sender_id', db.Integer, db.ForeignKey(
+        'messaging_ids.id'))
+    reciever_id = db.Column('reciever_id', db.Integer, db.ForeignKey(
+        'messaging_ids.id'))
+    previous_message_id = db.Column('previous_message_id', db.Integer, db.ForeignKey(
+        'messaging_ids.id'))
+    message_data =  db.relationship('Message', backref='DirectMessages', lazy='joined')
+    # business_data = db.relationship('Business', lazy='joined')
+    # user_data = db.relationship('User', lazy='joined')
+    @property
+    def serialize(self):
+        """Return object data in serial format"""
+        return {
+            'id': self.id,
+            'message_id':self.message_id,
+            'sender_id':self.sender_id,
+            'receiver_id':self.reciever_id,
+            'sender_name': MessagingIds.query.get(self.sender_id).name,
+            'reciever_name': MessagingIds.query.get(self.reciever_id).name,
+            'body':self.message_data.body,
+        }
+
+    @property
+    def get_names(self):
+        """Return object data in serial format"""
+        return {
+            'id': self.id,
+            'sender_name': MessagingIds.query.get(self.sender_id).name,
+            'reciever_name': MessagingIds.query.get(self.reciever_id).name,
+            'subject':self.message_data.subject,
+            'body':self.message_data.body,
+            'previous_message': DirectMessages.query.filter_by(id=self.previous_message_id).first().serialize
+        }
+
+class MessagingIds(db.Model):
+    __tablename__ = 'messaging_ids'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)

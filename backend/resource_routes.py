@@ -1,7 +1,7 @@
 from urllib import response
-from flask import jsonify, make_response,request, Blueprint
-from models import Business, Offering, Review, User, BusinessReview,db
-from auth_middleware import token_required,require_admin
+from flask import jsonify, make_response, request, Blueprint
+from models import Business, Offering, Review, User, BusinessReview, Message, DirectMessages, db
+from auth_middleware import token_required, require_admin
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -153,6 +153,7 @@ def delete_business_offering(id):
         "message": f"delete of business offering successful with id: {id}"}
     return jsonify(success_resp)
 
+
 @resources.post('/api/user')
 def create_user():
     new_user = User()
@@ -175,7 +176,7 @@ def get_all_users():
 
 @resources.get('/api/user/<id>')
 @token_required
-def get_single_user(current_user,id):
+def get_single_user(current_user, id):
     print(id)
     print(current_user)
     if current_user.id != id and current_user.is_admin != True:
@@ -189,7 +190,7 @@ def get_single_user(current_user,id):
 
 @resources.post('/api/user/<id>')
 @token_required
-def update_user(current_user,id):
+def update_user(current_user, id):
     excluded = ['password', 'username', 'is_admin']
     existing_user = User.query.get(current_user.id)
     password = request.form['password']
@@ -222,8 +223,7 @@ def delete_user(id):
 
 @resources.post('/api/business-review/<id>')
 @token_required
-def create_review(currentuser,*args):
-    id = args[1]['id']
+def create_review(currentuser, id):
     new_review = Review()
 
     for k, v in request.json.items():
@@ -233,10 +233,12 @@ def create_review(currentuser,*args):
     db.session.add(new_review)
     db.session.commit()
 
-    review = BusinessReview(user_id=currentuser.id,business_id=id,review_id=new_review.review_id)
+    review = BusinessReview(user_id=currentuser.id,
+                            business_id=id, review_id=new_review.review_id)
     db.session.add(review)
     db.session.commit()
     return jsonify(review.serialize)
+
 
 @resources.get('/api/ranks')
 def get_ranks():
@@ -246,5 +248,32 @@ def get_ranks():
     rank = 1
     for user in users:
         ranks[user.id] = rank
-        rank +=1
+        rank += 1
     return jsonify(ranks)
+
+
+@resources.get('/api/messages')
+def get_messages():
+    all_messages = [message.serialize for message in Message.query.all()]
+    return jsonify(all_messages)
+
+
+@resources.get('/api/user/<user_id>/messages')
+def get_user_messages(user_id):
+    user_messages_w_names = [message.get_names for message in DirectMessages.query.filter_by(
+        reciever_id=user_id).all()]
+
+    return jsonify(user_messages_w_names)
+
+
+@resources.post('/api/message')
+@token_required
+def new_message(current_user):
+    json = request.json
+    new_message = Message(subject=json['subject'], body=json['body'])
+    db.session.add(new_message)
+    db.session.commit()
+    new_direct_message = DirectMessages(message_id=new_message.id, sender_id=current_user.id, reciever_id=json['reciever_id'])
+    db.session.add(new_direct_message)
+    db.session.commit()
+    return jsonify(new_direct_message.serialize)

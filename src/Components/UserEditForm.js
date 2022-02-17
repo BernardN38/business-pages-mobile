@@ -36,6 +36,7 @@ export default function UserEditForm() {
       .then((resp) => {
         if (resp.status === 200) {
           console.log(resp.data, "code 200");
+          navigate('/profile')
         }
       });
   };

@@ -2,15 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import LoginForm from "./Components/LoginForm";
-import BusinessPage from "./Components/BusinessPage";
-import UserProfile from "./Components/UserProfile";
-import UserEditForm from "./Components/UserEditForm";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Provider, } from "react-redux";
+import { Provider } from "react-redux";
 import { createStore } from "redux";
-import RequireAuth from "./Components/RequireAuth";
 import rootReducer from "./reducers/rootReducer";
 
 const store = createStore(rootReducer);
@@ -18,19 +12,7 @@ const store = createStore(rootReducer);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-      <RequireAuth>
-      <Routes>
-          <Route path="/" element={<BusinessPage />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route element={<RequireAuth />}>
-            <Route path="/profile" element={<UserProfile />} />
-          </Route>
-        
-        <Route path="*" element={<BusinessPage />} />
-      </Routes>
-    </RequireAuth>
-      </BrowserRouter>
+      <App/>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

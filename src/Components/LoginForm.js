@@ -16,7 +16,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SimpleSnackbar from "./Snackbar";
-import {useAuth} from "../helpers.js/useAuth";
+
 const theme = createTheme();
 
 export default function LoginForm() {
@@ -24,7 +24,6 @@ export default function LoginForm() {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,6 +32,7 @@ export default function LoginForm() {
       if (resp.status === 200) {
         dispatch({ type: "SET_USER", payload: resp.data });
         dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
+        dispatch({ type: "SET_AUTH", payload: true });
         navigate('/')
         console.log(resp)
       }

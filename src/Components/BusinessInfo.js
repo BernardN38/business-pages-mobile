@@ -4,10 +4,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
-
+import capitalize from '../helpers/capitalize'
 import { useSelector } from "react-redux";
-
-
 
 function BuinessInfo() {
   const business = useSelector((state) => state.business.business);
@@ -15,11 +13,11 @@ function BuinessInfo() {
   const listItems = [];
   for (let [key, val] of Object.entries(business)) {
     const fields = ["name", "description", "address", "phone_number"];
-    console.log(key);
+
     if (fields.includes(key)) {
       listItems.push(
-        <ListItem>
-          <ListItemText key={key} primary={key} secondary={val} />
+        <ListItem key={key}>
+          <ListItemText primary={capitalize(key)} secondary={val} />
         </ListItem>
       );
     }

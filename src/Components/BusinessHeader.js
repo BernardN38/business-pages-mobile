@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
@@ -7,11 +7,15 @@ import Rating from "@mui/material/Rating";
 import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import "../css/businessheader.css";
-import capitalize from '../helpers.js/capitalize'
+import capitalize from "../helpers/capitalize";
+import { Typography } from "@mui/material";
+import MessageModal from "./MessageModal";
 function BusinessHeader() {
+  const [open,setOpen] = useState(false);
   const business = useSelector((state) => state.business.business);
   const dispatch = useDispatch();
 
@@ -30,7 +34,7 @@ function BusinessHeader() {
         <Stack direction="row" spacing={2}>
           <Avatar src={business.profile_image_url}></Avatar>
           <div>
-            <h5>{capitalize(business.name)||'Business Name'}</h5>
+            <h5>{capitalize(business.name) || "Business Name"}</h5>
             <p>{business.description || "Welcome to Our Page"}</p>
           </div>
         </Stack>
@@ -43,11 +47,16 @@ function BusinessHeader() {
             {business.phone_number ? (
               <Button>
                 <PhoneInTalkIcon>Call</PhoneInTalkIcon>
-                <span>Call</span>
+                <Typography>Call</Typography>
               </Button>
             ) : (
               ""
             )}
+            <Button onClick={()=>{setOpen(true)}}>
+              <MailOutlineIcon />
+              <span>Message</span>
+            </Button>
+            <MessageModal open={open} setOpen={setOpen}/>
           </Box>
         </Stack>
       </div>

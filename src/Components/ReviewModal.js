@@ -21,7 +21,7 @@ const style = {
   borderRadius: 3,
 };
 
-export default function TransitionsModal({reviews,setReviews}) {
+export default function TransitionsModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
