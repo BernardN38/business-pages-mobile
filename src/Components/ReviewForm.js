@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import { useSelector, useDispatch } from "react-redux";
-
+import config from "../config";
 function ReviewForm({ open, setOpen }) {
   const [reviewForm, setReviewForm] = useState({
     title: "",
@@ -27,7 +27,7 @@ function ReviewForm({ open, setOpen }) {
     const json = JSON.stringify(reviewForm);
     axios
       .post(
-        `http://localhost:5000/api/business-review/${business.business_id}`,
+        `${config.serverUrl}/api/business-review/${business.business_id}`,
         json,
         {
           withCredentials: true,
@@ -39,7 +39,7 @@ function ReviewForm({ open, setOpen }) {
       .then(() => {
         setOpen(!open);
         axios
-          .get(`http://localhost:5000/api/business/${business.business_id}`)
+          .get(`${config.serverUrl}/api/business/${business.business_id}`)
           .then((resp) => {
             dispatch({
               type: "SET_REVIEWS",

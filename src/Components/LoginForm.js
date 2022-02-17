@@ -16,11 +16,11 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SimpleSnackbar from "./Snackbar";
-
+import config from "../config";
 const theme = createTheme();
 
 export default function LoginForm() {
-  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [open,setOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,15 +28,23 @@ export default function LoginForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
-    axios.post("http://localhost:5000/login", data).then((resp) => {
-      if (resp.status === 200) {
-        dispatch({ type: "SET_USER", payload: resp.data });
-        dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
-        dispatch({ type: "SET_AUTH", payload: true });
-        navigate('/')
+    axios
+      .post(`${config.serverUrl}/login`, data, {
+        baseURL: config.serverUrl,
+        withCredentials: true,
+      })
+      .then((resp) => {
         console.log(resp)
-      }
-    });
+        if (resp.status === 200) {
+          dispatch({ type: "SET_USER", payload: resp.data });
+          dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
+          dispatch({ type: "SET_AUTH", payload: true });
+          navigate("/");
+        }
+      }).catch((error) => {
+          console.log(error.response.data)
+          setOpen(true)
+      });;
   };
 
   return (
@@ -102,7 +110,7 @@ export default function LoginForm() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -111,8 +119,10 @@ export default function LoginForm() {
         </Box>
         {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
         <SimpleSnackbar
-          success={loginSuccess}
-          setLoginSuccess={setLoginSuccess}
+          open={open}
+          setOpen={setOpen}
+          message="Login Failure"
+          severity='error'
         />
       </Container>
     </ThemeProvider>

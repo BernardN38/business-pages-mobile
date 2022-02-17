@@ -14,15 +14,16 @@ import "../css/businessheader.css";
 import capitalize from "../helpers/capitalize";
 import { Typography } from "@mui/material";
 import MessageModal from "./MessageModal";
+import config from '../config'
+
 function BusinessHeader() {
   const [open,setOpen] = useState(false);
   const business = useSelector((state) => state.business.business);
   const dispatch = useDispatch();
-
   useEffect(() => {
     const getBusiness = async () => {
       const business_req = await axios.get(
-        `http://localhost:5000/api/business/${business.business_id}`
+        `${config.serverUrl}/api/business/${business.business_id}`
       );
       dispatch({ type: "SET_BUSINESS", payload: business_req.data });
     };

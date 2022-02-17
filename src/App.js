@@ -11,6 +11,7 @@ import BusinessPage from "./Components/BusinessPage";
 import UserProfile from "./Components/UserProfile";
 import LoginForm from './Components/LoginForm'
 import UserEditForm from "./Components/UserEditForm";
+import SignupForm from "./Components/SignupForm";
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector } from "react-redux";
@@ -22,7 +23,7 @@ export default function App() {
         {/* public pages */}
         <Route path="/" element={<Main/>}>
         <Route index element={<BusinessPage/>}/>
-        
+        <Route path='/signup' element={<SignupForm/>}/>
         {/* private pages */}
         <Route path="/profile" element={<PrivateOutlet />}>
           <Route index element={<UserProfile/> } />

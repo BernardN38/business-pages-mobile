@@ -58,6 +58,7 @@ export default function Narbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const user = useSelector((state) => state.user.user);
+  const userData = useSelector((state) => state.user.userData);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

@@ -47,6 +47,7 @@ def login():
         }, secret_key, algorithm="HS256")
         resp =  make_response(jsonify({'token': jwt.decode(token, secret_key, algorithms="HS256")}), 200)
         resp.set_cookie('Bearer', value =  token, httponly = True, samesite='None', secure=True)
+        print(resp.json)
         return resp
     else:
         print('inccorect password token not set')
@@ -81,8 +82,15 @@ def signup():
         new_user.messaging_id = new_messaging_id.id
         db.session.add(new_user)
         db.session.commit()
+        token = jwt.encode({
+            'user_id': new_user.id,
+            'is_admin':new_user.is_admin,
+            'exp': datetime.utcnow() + timedelta(hours=24)
+        }, secret_key, algorithm="HS256")
+        resp =  make_response(jsonify({'token': jwt.decode(token, secret_key, algorithms="HS256")}), 201)
+        resp.set_cookie('Bearer', value =  token, httponly = True, samesite='Lax')
 
-        return make_response('Successfully registered.', 201)
+        return resp
     else:
         return make_response('User already exists. Please Log in.', 202)
 

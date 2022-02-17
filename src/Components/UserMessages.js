@@ -8,17 +8,19 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import axios from "axios";
+import config from "../config";
+import { useSelector } from "react-redux";
 export default function UserMessages() {
   const [messages, setMessages] = useState([]);
   const instance = axios.create({
     withCredentials: true,
     baseURL: "http://localhost:5000/",
   });
-  const user_id = 1;
+  let user = useSelector((state) => state.user.user);
   useEffect(() => {
     const getMessages = async () => {
       const resp = await instance.get(
-        `http://localhost:5000/api/user/${user_id}/messages`
+        `${config.serverUrl}/api/user/${user.token.user_id}/messages`
       );
       console.log(resp.data);
       setMessages(resp.data);

@@ -1,45 +1,40 @@
-import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
+import React, { useState} from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import {  useDispatch } from "react-redux";
 import SimpleSnackbar from "./Snackbar";
+import { useNavigate } from "react-router-dom";
 import config from "../config";
+
 const theme = createTheme();
 
-export default function UserEditForm() {
+export default function SignupForm() {
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const instance = axios.create({
     withCredentials: true,
-    baseURL: "http://localhost:5000/",
+    baseURL: config.serverUrl,
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
-    instance
-      .post(`${config.serverUrl}/api/user/${user.token.user_id}`, data)
-      .then((resp) => {
-        if (resp.status === 200) {
-          console.log(resp.data, "code 200");
-          navigate("/profile");
-        }
-      });
+    instance.post(`${config.serverUrl}/signup`, data).then((resp) => {
+      if (resp.status === 201) {
+        console.log(resp.data)
+        dispatch({ type: "SET_USER", payload: resp.data });
+        dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
+        dispatch({ type: "SET_AUTH", payload: true });
+        navigate('/')
+      }
+    });
   };
 
   return (
@@ -55,7 +50,7 @@ export default function UserEditForm() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Edit Profile
+            Create Profile
           </Typography>
           <Box
             component="form"
@@ -87,18 +82,24 @@ export default function UserEditForm() {
               id="profile_image_url"
               label="Image URL"
               name="profile_image_url"
-              autoComplete="username"
-              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="username"
+              label="Username"
+              type="username"
+              id="username"
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password to comfirm changes"
+              label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
             />
             <Button
               type="submit"

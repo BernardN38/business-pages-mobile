@@ -4,6 +4,8 @@ from flask_cors import CORS, cross_origin
 from keys import secret_key
 from resource_routes import resources
 from auth_routes import auth
+
+
 import logging
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages'
@@ -11,7 +13,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = secret_key
-
 
 CORS(app, resources=r'/api/*', supports_credentials=True)
 db.init_app(app)

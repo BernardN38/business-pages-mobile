@@ -1,6 +1,6 @@
 from urllib import response
 from flask import jsonify, make_response, request, Blueprint
-from models import Business, Offering, Review, User, BusinessReview, Message, DirectMessages, db
+from models import Business, Offering, Review, User, BusinessReview, Message, DirectMessages, ReviewReply,Reply, db
 from auth_middleware import token_required, require_admin
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -177,9 +177,8 @@ def get_all_users():
 @resources.get('/api/user/<id>')
 @token_required
 def get_single_user(current_user, id):
-    print(id)
-    print(current_user)
-    if current_user.id != id and current_user.is_admin != True:
+    print(current_user.id,id)
+    if current_user.id != int(id) and current_user.is_admin == False:
         return jsonify('unathorized')
     user = User.query.get(id)
     resp = make_response(user.serialize)
@@ -246,7 +245,7 @@ def get_ranks():
     users = User.query.order_by(User.score.desc()).all()
     ranks = defaultdict(int)
     rank = 1
-    for user in users:
+    for user in users: 
         ranks[user.id] = rank
         rank += 1
     return jsonify(ranks)
@@ -265,6 +264,11 @@ def get_user_messages(user_id):
 
     return jsonify(user_messages_w_names)
 
+@resources.get('/api/review/<review_id>/replies')
+def get_review_replies(review_id):
+    business_review = BusinessReview.query.filter_by(review_id=review_id).first()
+    replies = [reply.serialize for reply in business_review.replies]
+    return jsonify(replies)
 
 @resources.post('/api/message')
 @token_required
@@ -274,6 +278,19 @@ def new_message(current_user):
     db.session.add(new_message)
     db.session.commit()
     new_direct_message = DirectMessages(message_id=new_message.id, sender_id=current_user.id, reciever_id=json['reciever_id'])
+    if json['previous_message_id']:
+        new_direct_message.previous_message_id = json['previous_message_id']
     db.session.add(new_direct_message)
     db.session.commit()
     return jsonify(new_direct_message.serialize)
+
+@resources.post('/api/review/<review_id>/reply')
+@token_required
+def review_reply(current_user,review_id):
+    json = request.json
+    print(json)
+    new_reply = Reply(user_id=current_user.id,body=json['body'])
+    business_review = BusinessReview.query.filter_by(review_id=review_id).first()
+    business_review.replies.append(new_reply)
+    db.session.commit()
+    return jsonify(new_reply.serialize)

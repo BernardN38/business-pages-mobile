@@ -8,8 +8,12 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function SimpleSnackbar() {
+export default function SimpleSnackbar({open, setOpen, message, severity}) {
   let status = useSelector((state) => state.login.loginSuccess);
+  if (open){
+    status = open
+  } 
+
   const dispatch = useDispatch();
 
   function SlideTransition(props) {
@@ -34,8 +38,8 @@ export default function SimpleSnackbar() {
         TransitionComponent={SlideTransition}
         onClose={handleClose}
       >
-        <Alert  severity="success" sx={{ width: "100%" }}>
-          This is a success message!
+        <Alert  severity={severity}sx={{ width: "100%" }}>
+         {message}
         </Alert>
       </Snackbar>
     </div>

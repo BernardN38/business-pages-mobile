@@ -14,6 +14,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import config from "../config";
 
 
 const style = {
@@ -34,9 +35,9 @@ export default function MessageModal({ open, setOpen }) {
   const [messageForm, setMessageForm] = useState({
     subject: "",
     body: "",
-    reciever_id:business.business_id
+    reciever_id:business.messaging_id
   });
-  const handleOpen = () => setOpen(true);
+ 
   const handleClose = () => setOpen(false);
   let user = useSelector((state) => state.user.user);
   
@@ -45,7 +46,7 @@ export default function MessageModal({ open, setOpen }) {
     const json = JSON.stringify(messageForm);
     axios
     .post(
-      `http://localhost:5000/api/message`,
+      `${config.serverUrl}/api/message`,
       json,
       {
         withCredentials: true,
