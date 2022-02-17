@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
+import Box from '@mui/material/Box'
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
@@ -16,14 +17,15 @@ export default function ReviewReplies({ reviewId }) {
       .get(`${config.serverUrl}/api/review/${reviewId}/replies`)
       .then((resp) => {
         setReplies(resp.data);
-        console.log(resp.data);
+      
       });
   }, []);
   return (
-    <div>
-      {replies.map((reply) => {
+    <Box padding='2px'>
+      {replies.map((reply,idx) => {
+        if (idx>4) return 
         return (
-          <div>
+          <Box sx={{borderTop:'1px solid black',borderBottom:'1px solid black', borderRadius:'2px', margin:'3px'}}>
             <CardContent>
               <Stack direction="row" className="d-flex align-items-center">
                 <Avatar src={reply.profile_image_url} />
@@ -40,9 +42,9 @@ export default function ReviewReplies({ reviewId }) {
                 {reply.body}
               </Typography>
             </CardContent>
-          </div>
+          </Box>
         );
       })}
-    </div>
+    </Box>
   );
 }

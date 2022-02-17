@@ -45,6 +45,7 @@ def get_business(id):
     business = Business.query.get(id)
     if not business:
         return jsonify({'message': f'no business found with id {id}'})
+    print(business)
     return jsonify(business.serialize)
 
 # update existing business

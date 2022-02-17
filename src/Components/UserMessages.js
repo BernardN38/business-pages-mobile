@@ -11,22 +11,7 @@ import axios from "axios";
 import config from "../config";
 import { useSelector } from "react-redux";
 export default function UserMessages() {
-  const [messages, setMessages] = useState([]);
-  const instance = axios.create({
-    withCredentials: true,
-    baseURL: "http://localhost:5000/",
-  });
-  let user = useSelector((state) => state.user.user);
-  useEffect(() => {
-    const getMessages = async () => {
-      const resp = await instance.get(
-        `${config.serverUrl}/api/user/${user.token.user_id}/messages`
-      );
-      console.log(resp.data);
-      setMessages(resp.data);
-    };
-    getMessages();
-  }, []);
+  let messages = useSelector((state) => state.user.messages);
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       {messages.map((message) => {

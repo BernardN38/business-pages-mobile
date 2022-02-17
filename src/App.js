@@ -15,6 +15,7 @@ import SignupForm from "./Components/SignupForm";
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector } from "react-redux";
+import Homepage from "./Components/Homepage";
 
 export default function App() {
   return (
@@ -22,7 +23,7 @@ export default function App() {
       <Routes>
         {/* public pages */}
         <Route path="/" element={<Main/>}>
-        <Route index element={<BusinessPage/>}/>
+        <Route index element={<Homepage/>}/>
         <Route path='/signup' element={<SignupForm/>}/>
         {/* private pages */}
         <Route path="/profile" element={<PrivateOutlet />}>

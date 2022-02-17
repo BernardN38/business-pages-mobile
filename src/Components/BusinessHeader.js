@@ -8,27 +8,16 @@ import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
 import "../css/businessheader.css";
 import capitalize from "../helpers/capitalize";
 import { Typography } from "@mui/material";
 import MessageModal from "./MessageModal";
 import config from '../config'
 
-function BusinessHeader() {
+function BusinessHeader({business,rating}) {
   const [open,setOpen] = useState(false);
-  const business = useSelector((state) => state.business.business);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const getBusiness = async () => {
-      const business_req = await axios.get(
-        `${config.serverUrl}/api/business/${business.business_id}`
-      );
-      dispatch({ type: "SET_BUSINESS", payload: business_req.data });
-    };
-    getBusiness();
-  }, []);
+  
+  
   return (
     <Container className="p-1">
       <div className="business-header-main">
@@ -41,8 +30,8 @@ function BusinessHeader() {
         </Stack>
         <Stack direction="row" spacing={3} className="h-75">
           <Box className="d-flex justify-content-center align-items-center">
-            <Rating name="read-only" value={+business.rating} readOnly />
-            <Chip label={`${100} Ratings`} variant="outlined" />
+            <Rating name="read-only" value={rating/business.business_reviews.length} readOnly />
+            <Chip label={`${business.business_reviews.length} Reviews`} variant="outlined" />
           </Box>
           <Box>
             {business.phone_number ? (

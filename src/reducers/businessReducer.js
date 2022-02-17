@@ -1,7 +1,8 @@
 const initState = {
   business: {
     name:'',
-    business_id: 1
+    business_id: 1,
+    business_reviews:[]
   }
 }
 

@@ -38,7 +38,7 @@ export default function SimpleSnackbar({open, setOpen, message, severity}) {
         TransitionComponent={SlideTransition}
         onClose={handleClose}
       >
-        <Alert  severity={severity}sx={{ width: "100%" }}>
+        <Alert  severity={severity} ssx={{ width: "100%" }}>
          {message}
         </Alert>
       </Snackbar>
