@@ -1,8 +1,13 @@
 import React from 'react';
+import BusinessCategories from './BusinessCategories';
+import HomepageHeader from './HomepageHeader';
 
 
 export default function Homepage(){
     return (
-        <div>Home</div>
+        <div >
+            <HomepageHeader/>
+            <BusinessCategories/>
+        </div>
     )
 }

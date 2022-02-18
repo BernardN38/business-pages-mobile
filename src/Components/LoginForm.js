@@ -13,15 +13,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SimpleSnackbar from "./Snackbar";
 import config from "../config";
+
 const theme = createTheme();
 
 export default function LoginForm() {
   const [open,setOpen] = useState(false);
-  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

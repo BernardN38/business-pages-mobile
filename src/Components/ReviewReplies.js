@@ -17,7 +17,7 @@ export default function ReviewReplies({ reviewId }) {
       .get(`${config.serverUrl}/api/review/${reviewId}/replies`)
       .then((resp) => {
         setReplies(resp.data);
-      
+        console.log(resp.data);
       });
   }, []);
   return (

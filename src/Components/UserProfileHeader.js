@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import "../css/user-profile-header.css";
-import config from "../config";
-function UserProfileHeader({userData, rank}) {
- 
+
+function UserProfileHeader({ userData, rank }) {
   return (
     <Box
       display="flex"
@@ -31,7 +24,10 @@ function UserProfileHeader({userData, rank}) {
           justifyContent="center"
           padding={1}
         >
-          <Avatar sx={{ height: "70px", width: "70px" }} src={userData.profile_image_url} />
+          <Avatar
+            sx={{ height: "70px", width: "70px" }}
+            src={userData.profile_image_url}
+          />
         </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" align="center">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
@@ -12,12 +12,15 @@ import "../css/businessheader.css";
 import capitalize from "../helpers/capitalize";
 import { Typography } from "@mui/material";
 import MessageModal from "./MessageModal";
-import config from '../config'
 
-function BusinessHeader({business,rating}) {
-  const [open,setOpen] = useState(false);
-  
-  
+function BusinessHeader({ business }) {
+  const [open, setOpen] = useState(false);
+  let rating = 0;
+  let sum = 0;
+  for (const review of business.business_reviews) {
+    sum += +review.rating;
+  }
+  rating = sum;
   return (
     <Container className="p-1">
       <div className="business-header-main">
@@ -28,10 +31,17 @@ function BusinessHeader({business,rating}) {
             <p>{business.description || "Welcome to Our Page"}</p>
           </div>
         </Stack>
-        <Stack direction="row" spacing={3} className="h-75">
+        <Stack direction="row" spacing={3} className="h-75" width="100%">
           <Box className="d-flex justify-content-center align-items-center">
-            <Rating name="read-only" value={rating/business.business_reviews.length} readOnly />
-            <Chip label={`${business.business_reviews.length} Reviews`} variant="outlined" />
+            <Rating
+              name="read-only"
+              value={rating / business.business_reviews.length}
+              readOnly
+            />
+            <Chip
+              label={`${business.business_reviews.length} Reviews`}
+              variant="outlined"
+            />
           </Box>
           <Box>
             {business.phone_number ? (
@@ -42,11 +52,15 @@ function BusinessHeader({business,rating}) {
             ) : (
               ""
             )}
-            <Button onClick={()=>{setOpen(true)}}>
+            <Button
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
               <MailOutlineIcon />
               <span>Message</span>
             </Button>
-            <MessageModal open={open} setOpen={setOpen}/>
+            <MessageModal open={open} setOpen={setOpen} />
           </Box>
         </Stack>
       </div>

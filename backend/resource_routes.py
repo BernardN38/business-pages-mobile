@@ -1,6 +1,6 @@
 from urllib import response
 from flask import jsonify, make_response, request, Blueprint
-from models import Business, Offering, Review, User, BusinessReview, Message, DirectMessages, ReviewReply,Reply, db
+from models import Business, Offering, Review, User, BusinessReview, Message, DirectMessages, ReviewReply,Reply, MessagingIds, db
 from auth_middleware import token_required, require_admin
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,20 +11,27 @@ resources = Blueprint('resources', __name__)
 CORS(resources,  supports_credentials=True)
 
 
-# @resources.after_request
-# def after_request(response):
-#     print('after requestcheck ')
-#     response.headers["Access-Control-Allow-Origin"] = "localhost:3000"
-#     response.headers['Access-Control-Allow-Credentials'] = 'true'
-#     response.headers['Access-Control-Allow-Methods'] = "PATCH"
-#     print(response)
-#     return response
-#  create business
-@resources.post("/api/business")
+
+# @resources.post("/api/business")
+# def create_business():
+#     new_business = Business()
+#     for k, v in request.json.items():
+#         setattr(new_business, k, v)
+#     db.session.add(new_business)
+#     db.session.commit()
+
+#     return jsonify(new_business.serialize)
+
+@resources.post("/api/business/signup")
 def create_business():
     new_business = Business()
-    for k, v in request.json.items():
+    for k, v in request.form.items():
         setattr(new_business, k, v)
+    new_messaging_id = MessagingIds(name=request.form['name'])
+    db.session.add(new_messaging_id)
+    db.session.commit()
+    new_business.messaging_id = new_messaging_id.id
+    db.session.add(new_business)
     db.session.commit()
 
     return jsonify(new_business.serialize)

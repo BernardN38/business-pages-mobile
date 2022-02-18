@@ -3,6 +3,7 @@ import OfferingCard from "./OfferingCard"
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import config from "../config";
+
 function BusinessOfferings() {
   const [offerings, setOfferings] = useState([]);
   const business = useSelector((state) => state.business.business)

@@ -13,7 +13,8 @@ import {
 import Rating from "@mui/material/Rating";
 import { useSelector, useDispatch } from "react-redux";
 import config from "../config";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 function ReviewForm({ open, setOpen }) {
   const [reviewForm, setReviewForm] = useState({
     title: "",
@@ -45,7 +46,7 @@ function ReviewForm({ open, setOpen }) {
               type: "SET_REVIEWS",
               payload: resp.data.business_reviews,
             });
-            navigate('/')
+            // navigate("/");
           });
       });
   };
