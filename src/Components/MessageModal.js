@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import config from "../config";
 
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -32,32 +31,33 @@ const style = {
 
 export default function MessageModal({ open, setOpen }) {
   const business = useSelector((state) => state.business.business);
+  console.log(business.messaging_id);
   const [messageForm, setMessageForm] = useState({
     subject: "",
     body: "",
-    reciever_id:business.messaging_id
+    reciever_id: "",
   });
- 
+
   const handleClose = () => setOpen(false);
-  let user = useSelector((state) => state.user.user);
-  
+
   const handleSubmit = (e) => {
-    
-    const json = JSON.stringify(messageForm);
+    const data = {
+      ...messageForm,
+      reciever_id: business.messaging_id,
+    };
+    const json = JSON.stringify(data);
+    console.log(json);
     axios
-    .post(
-      `${config.serverUrl}/api/message`,
-      json,
-      {
+      .post(`${config.serverUrl}/api/message`, json, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
-      }
-    ).then((resp)=>{
-      console.log(resp)
-    })
-    handleClose()
+      })
+      .then((resp) => {
+        console.log(resp);
+      });
+    // handleClose();
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -66,6 +66,7 @@ export default function MessageModal({ open, setOpen }) {
       [name]: value,
     });
   };
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Modal

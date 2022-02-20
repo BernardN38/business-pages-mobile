@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,28 +7,33 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import {  useDispatch } from "react-redux";
 import SimpleSnackbar from "./Snackbar";
-import { useNavigate } from "react-router-dom";
 import config from "../config";
-
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { useNavigate } from "react-router-dom";
 const theme = createTheme();
 
 export default function BusinessForm() {
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const instance = axios.create({
-    withCredentials: true,
     baseURL: config.serverUrl,
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
-    instance.post(`${config.serverUrl}/business/signup`, data).then((resp)=>{
-        console.log(resp)
-    })
+    console.log(data.get("business_type"));
+    instance
+      .post(`${config.serverUrl}/api/business/signup`, data)
+      .then((resp) => {
+        console.log(resp.data)
+        if (resp.status === 201) {
+          navigate("/");
+        }
+      });
   };
 
   return (
@@ -65,10 +70,18 @@ export default function BusinessForm() {
               margin="normal"
               required
               fullWidth
+              id="email"
+              label="Business Email"
+              name="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="description"
               label="Business Description"
               name="description"
-         
               autoFocus
             />
             <TextField
@@ -80,7 +93,6 @@ export default function BusinessForm() {
             />
             <TextField
               margin="normal"
-             
               fullWidth
               name="profile_image_url"
               label="Profile Image URL"
@@ -89,21 +101,28 @@ export default function BusinessForm() {
             />
             <TextField
               margin="normal"
-              required
               fullWidth
-              name="business_type"
-              label="Business Type"
-              id="business_type"
-            />
-            <TextField
-              margin="normal"
               required
-              fullWidth
               name="password"
               label="Password"
               type="password"
               id="password"
             />
+            <InputLabel id="demo-simple-select-label">Business Type</InputLabel>
+            <Select
+              fullWidth
+              labelId="demo-simple-select-label"
+              id="businessType"
+              name="business_type"
+              label="Business Type"
+              defaultValue={"food"}
+              // onChange={handleChange}
+            >
+              <MenuItem value={"food"}>Food</MenuItem>
+              <MenuItem value={"automotive"}>Automotive</MenuItem>
+              <MenuItem value={"phone_repair"}>Phone Repair</MenuItem>
+              <MenuItem value={"home_repair"}>Home Repair</MenuItem>
+            </Select>
             <Button
               type="submit"
               fullWidth

@@ -10,6 +10,7 @@ import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
 import ReviewReply from "./ReviewReply";
 import ReviewReplies from "./ReviewReplies";
+import { useSelector } from "react-redux";
 export default function Review({
   reviewBody,
   username,
@@ -19,6 +20,7 @@ export default function Review({
   userProfileImage
 }) {
   const [open, setOpen] = useState(false);
+  const authMode = useSelector((state)=> state.auth.authMode)
   return (
     <div className="p-2">
       <Card sx={{ minWidth: 275 }} className="border border-dark">
@@ -57,7 +59,7 @@ export default function Review({
           </Button>
         </CardActions>
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <ReviewReply reviewId={reviewId} />
+          {authMode === 'user' ? <ReviewReply reviewId={reviewId} />:'' }
           <ReviewReplies reviewId={reviewId} />
         </Collapse>
       </Card>

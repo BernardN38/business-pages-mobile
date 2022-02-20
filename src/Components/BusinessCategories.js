@@ -29,7 +29,7 @@ export default function BusinessCategories() {
         </Box>
 
         <Box sx={{ justifyContent: "center" }} >
-          <Button value="autoMotive" onClick={handleClick}>
+          <Button value="automotive" onClick={handleClick}>
             <Stack justifyContent="center" alignItems="center">
               <BuildIcon style={{ fontSize: 60 }} />
               <Typography variant="subtitle2" align="center">
@@ -40,7 +40,7 @@ export default function BusinessCategories() {
         </Box>
 
         <Box sx={{ justifyContent: "center" }} value="phoneRepair">
-          <Button value="phoneRepair" onClick={handleClick}>
+          <Button value="phone_repair" onClick={handleClick}>
             <Stack justifyContent="center" alignItems="center">
               <PhoneIphoneIcon style={{ fontSize: 63 }} />
               <Typography variant="subtitle2" align="center">
@@ -51,7 +51,7 @@ export default function BusinessCategories() {
         </Box>
 
         <Box sx={{ justifyContent: "center" }}>
-          <Button value="homeRepair" onClick={handleClick}>
+          <Button value="home_repair" onClick={handleClick}>
             <Stack justifyContent="center" alignItems="center">
               <HomeRepairServiceIcon style={{ fontSize: 60 }} />
               <Typography variant="subtitle2" align="center">

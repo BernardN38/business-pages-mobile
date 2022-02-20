@@ -38,19 +38,20 @@ class Business(db.Model):
     __tablename__ = 'business'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=True, nullable=False)
-    description = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.String(11))
     profile_image_url = db.Column(db.String(2048))
     rating = db.Column(db.Integer)
     address = db.Column(db.String(100))
-    business_type = db.Column(db.String())
+    business_type = db.Column(db.String, nullable=False)
     messaging_id = db.Column(db.Integer, db.ForeignKey(
         'messaging_ids.id'))
     business_offerings = db.relationship('Offering', secondary=business_offerings, lazy="joined",
                                          backref=db.backref('Business', lazy=True))
     business_reviews = db.relationship('Review', secondary=business_reviews, lazy='joined',
                                        backref=db.backref('Business', lazy=True))
-
     def __repr__(self):
         return '<Name %r>' % self.name
 
@@ -224,7 +225,7 @@ class DirectMessages(db.Model):
         'messaging_ids.id'))
     reciever_id = db.Column('reciever_id', db.Integer, db.ForeignKey(
         'messaging_ids.id'))
-    previous_message_id = db.Column('previous_message_id', db.Integer)
+    previous_message_id = db.Column('previous_message_id', db.Integer, nullable=True)
     message_data = db.relationship(
         'Message', backref='DirectMessages', lazy='joined')
     # business_data = db.relationship('Business', lazy='joined')
@@ -241,6 +242,7 @@ class DirectMessages(db.Model):
             'sender_name': MessagingIds.query.get(self.sender_id).name,
             'reciever_name': MessagingIds.query.get(self.reciever_id).name,
             'body': self.message_data.body,
+            'subject': self.message_data.subject,
         }
 
     @property

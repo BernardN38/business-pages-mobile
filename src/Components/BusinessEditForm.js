@@ -1,40 +1,45 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import {  useDispatch } from "react-redux";
-import SimpleSnackbar from "./Snackbar";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import SimpleSnackbar from "./Snackbar";
 import config from "../config";
-
 const theme = createTheme();
 
-export default function SignupForm() {
+export default function BusinessEditForm() {
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const instance = axios.create({
     withCredentials: true,
-    baseURL: config.serverUrl,
+    baseURL: "http://localhost:5000/",
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
-    instance.post(`${config.serverUrl}/signup`, data).then((resp) => {
-      if (resp.status === 201) {
-        console.log(resp.data)
-        dispatch({ type: "SET_USER", payload: resp.data });
-        dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
-        dispatch({ type: "SET_AUTH_MODE", payload: 'user' });
-        navigate('/')
-      }
-    });
+    instance
+      .post(`${config.serverUrl}/api/user/${user.token.user_id}`, data)
+      .then((resp) => {
+        if (resp.status === 200) {
+          console.log(resp.data, "code 200");
+          navigate("/profile");
+        }
+      });
   };
 
   return (
@@ -50,7 +55,7 @@ export default function SignupForm() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Create Profile
+            Edit Profile
           </Typography>
           <Box
             component="form"
@@ -61,45 +66,37 @@ export default function SignupForm() {
             <TextField
               margin="normal"
               fullWidth
-              id="firstName"
-              label="First Name"
-              name="first_name"
-              autoComplete="firstName"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              id="last_ame"
-              label="Last Name"
-              name="last_name"
-              autoComplete="last_name"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              id="profile_image_url"
-              label="Image URL"
+              id="profileImage"
+              label="Profile Image URL"
               name="profile_image_url"
+              autoFocus
             />
             <TextField
               margin="normal"
-              required
               fullWidth
-              name="username"
-              label="Username"
-              type="username"
-              id="username"
+              id="description"
+              label="Description"
+              name="description"
+          
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              id="pheonNumber"
+              label="Phone Number"
+              name="phone_number"
+              autoFocus
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Password to comfirm changes"
               type="password"
               id="password"
+              autoComplete="current-password"
             />
             <Button
               type="submit"

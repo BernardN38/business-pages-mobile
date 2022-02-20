@@ -27,6 +27,8 @@ def create_business():
     new_business = Business()
     for k, v in request.form.items():
         setattr(new_business, k, v)
+    if request.form.get('password'):
+        new_business.password = generate_password_hash(request.form['password'])
     new_messaging_id = MessagingIds(name=request.form['name'])
     db.session.add(new_messaging_id)
     db.session.commit()
@@ -34,14 +36,15 @@ def create_business():
     db.session.add(new_business)
     db.session.commit()
 
-    return jsonify(new_business.serialize)
+    return jsonify(new_business.serialize),201
 
 # get list of all businesses
 
 
 @resources.get("/api/business")
 def get_businesses():
-    businesses = [business.serialize for business in Business.query.all()]
+    business_type = request.args['business_type']
+    businesses = [business.serialize for business in Business.query.filter_by(business_type=business_type) if business]
     return jsonify(businesses)
 
 # get single business
@@ -54,6 +57,20 @@ def get_business(id):
         return jsonify({'message': f'no business found with id {id}'})
     print(business)
     return jsonify(business.serialize)
+# get business profile
+
+@resources.get("/api/business/<business_id>/profile")
+@token_required
+def get_business_profile(user,business_id):
+    messages = DirectMessages.query.filter_by(reciever_id=user.messaging_id).all()
+    business = user.serialize
+    business['messages'] = [message.serialize for message in messages if message]
+    print(business['messages'])
+    # business = Business.query.get(id)
+    # if not business:
+    #     return jsonify({'message': f'no business found with id {id}'})
+    # print(business)
+    return jsonify(business)
 
 # update existing business
 
@@ -185,8 +202,7 @@ def get_all_users():
 @resources.get('/api/user/<id>')
 @token_required
 def get_single_user(current_user, id):
-    print(current_user.id,id)
-    if current_user.id != int(id) and current_user.is_admin == False:
+    if id and current_user.id != int(id) and current_user.is_admin == False:
         return jsonify('unathorized')
     user = User.query.get(id)
     resp = make_response(user.serialize)
@@ -267,7 +283,7 @@ def get_messages():
 
 @resources.get('/api/user/<user_id>/messages')
 def get_user_messages(user_id):
-    user_messages_w_names = [message.get_names for message in DirectMessages.query.filter_by(
+    user_messages_w_names = [message.serialize for message in DirectMessages.query.filter_by(
         reciever_id=user_id).all()]
 
     return jsonify(user_messages_w_names)
@@ -282,15 +298,16 @@ def get_review_replies(review_id):
 @token_required
 def new_message(current_user):
     json = request.json
-    new_message = Message(subject=json['subject'], body=json['body'])
+    print(current_user.messaging_id,json)
+    new_message = Message(subject=json.get('subject'), body=json['body'])
     db.session.add(new_message)
     db.session.commit()
-    new_direct_message = DirectMessages(message_id=new_message.id, sender_id=current_user.id, reciever_id=json['reciever_id'])
-    if json['previous_message_id']:
+    new_direct_message = DirectMessages(message_id=new_message.id, sender_id=current_user.messaging_id, reciever_id=json['reciever_id'])
+    if json.get('previous_message_id'):
         new_direct_message.previous_message_id = json['previous_message_id']
     db.session.add(new_direct_message)
     db.session.commit()
-    return jsonify(new_direct_message.serialize)
+    return jsonify(json)
 
 @resources.post('/api/review/<review_id>/reply')
 @token_required
@@ -302,3 +319,7 @@ def review_reply(current_user,review_id):
     business_review.replies.append(new_reply)
     db.session.commit()
     return jsonify(new_reply.serialize)
+
+
+
+# @resource.get('/api/')

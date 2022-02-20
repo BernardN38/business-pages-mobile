@@ -20,7 +20,7 @@ import config from "../config";
 
 const theme = createTheme();
 
-export default function LoginForm() {
+export default function BusinessLogin() {
   const [open,setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,23 +29,26 @@ export default function LoginForm() {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     axios
-      .post(`${config.serverUrl}/login`, data, {
+      .post(`${config.serverUrl}/business/login`, data, {
         baseURL: config.serverUrl,
         withCredentials: true,
       })
       .then((resp) => {
         console.log(resp)
         if (resp.status === 200) {
-          localStorage.setItem('token',JSON.stringify(resp.data.token))
-          dispatch({ type: "SET_USER", payload: resp.data });
-          dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
-          dispatch({ type: "SET_AUTH_MODE", payload: 'user' });
-          navigate("/");
+          localStorage.setItem('businessToken', JSON.stringify(resp.data.token))
+          dispatch({ type: "SET_BUSINESS_TOKEN", payload: resp.data });
+          dispatch({ type: "SET_AUTH_MODE", payload: 'business' });
+          axios.get(`${config.serverUrl}/api/business/${resp.data.token.business_id}/profile`, {withCredentials:true}).then((resp)=>{
+            dispatch({ type: "SET_BUSINESS_PROFILE", payload: resp.data });
+            navigate('/profile/business')
+          })
         }
       }).catch((error) => {
           console.log(error.response.data)
           setOpen(true)
-      });;
+      });
+    
   };
 
   return (
@@ -64,7 +67,7 @@ export default function LoginForm() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Business Sign in
           </Typography>
           <Box
             component="form"
@@ -76,10 +79,10 @@ export default function LoginForm() {
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
+              id="email"
+              label="E-mail"
+              name="email"
+              autoComplete="email"
               autoFocus
             />
             <TextField
@@ -107,24 +110,12 @@ export default function LoginForm() {
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
                   
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/business/login" variant="body2">
-                  Business Login
+                <Link href="/business/signup" variant="body2">
+                  {"Don't have an Business Account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
@@ -141,3 +132,4 @@ export default function LoginForm() {
     </ThemeProvider>
   );
 }
+ 

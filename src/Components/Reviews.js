@@ -7,10 +7,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 function Reviews() {
   const reviewList = useSelector((state) => state.reviews.reviewList);
-
+  const authMode = useSelector((state) => state.auth.authMode)
   return (
     <Stack>
-      <ReviewModal />
+      {authMode === 'user' ? <ReviewModal />: ''}
       {reviewList.map((review, idx) => {
         return (
           <Review

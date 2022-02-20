@@ -10,35 +10,15 @@ import Box from "@mui/material/Box";
 import axios from "axios";
 import config from "../config";
 import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import Message from "./Message";
 export default function UserMessages() {
   let messages = useSelector((state) => state.user.messages);
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       {messages.map((message) => {
         return (
-          <div>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              </ListItemAvatar>
-              <ListItemText
-                primary={`Subject: ${message.subject}`}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      color="text.primary"
-                    >
-                      Sender: {message.sender_name}
-                    </Typography>
-                    {` -- ${message.body}`}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-          </div>
+          <Message key={uuidv4()} message={message}/>
         );
       })}
     </List>

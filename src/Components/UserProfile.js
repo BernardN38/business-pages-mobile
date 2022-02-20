@@ -16,24 +16,20 @@ function UserProfile() {
   });
 
   useEffect(() => {
-    instance
-      .get(`${config.serverUrl}/api/user/${user.token.user_id}`)
-      .then((resp) => {
-        console.log(resp.data);
-        dispatch({ type: "SET_USER_DATA", payload: resp.data });
-      });
     instance.get(`${config.serverUrl}/api/ranks`).then((resp) => {
       dispatch({
         type: "SET_USER_RANK",
         payload: resp.data[user.token.user_id],
       });
     });
-    instance.get(`${config.serverUrl}/api/user/${user.token.user_id}/messages`).then((resp)=>{
-      dispatch({
-        type: "SET_USER_MESSAGES",
-        payload: resp.data,
+    instance
+      .get(`${config.serverUrl}/api/user/${user.token.user_id}/messages`)
+      .then((resp) => {
+        dispatch({
+          type: "SET_USER_MESSAGES",
+          payload: resp.data,
+        });
       });
-    })
   }, []);
   return (
     <div>

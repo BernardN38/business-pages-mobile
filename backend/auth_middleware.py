@@ -3,7 +3,7 @@ from keys import secret_key
 import jwt
 from datetime import datetime, timedelta
 from functools import wraps
-from models import User
+from models import User,Business
 from flask_cors import cross_origin
 
 
@@ -23,7 +23,13 @@ def token_required(f, *args, **kwargs):
             # decoding the payload to fetch the stored details
             data = jwt.decode(token, secret_key, algorithms="HS256")
             print(data)
-            current_user = User.query.get(data['user_id'])
+            if data.get('user_id'):
+                print('user')
+                current_user = User.query.get(data['user_id'])
+            elif data.get('business_id'):
+                print('business')
+                current_user = Business.query.get(data.get('business_id'))
+                print(current_user,'test')
         except:
             return jsonify({
                 'message': 'Token is invalid !!'

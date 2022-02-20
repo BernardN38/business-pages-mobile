@@ -9,7 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
@@ -57,9 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Narbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const user = useSelector((state) => state.user.user);
-  const userData = useSelector((state) => state.user.userData);
-
+  const authMode = useSelector((state)=> state.auth.authMode)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -113,10 +111,23 @@ export default function Narbar() {
         <MenuItem component={Link} to="/" onClick={handleClose}>
           Home
         </MenuItem>
-        <MenuItem  component={Link} to="/profile"  onClick={handleClose}>My account</MenuItem>
+        {authMode==='user' ? <MenuItem
+            component={Link}
+            to="/profile"
+            onClick={handleClose}
+          >
+            My account
+          </MenuItem>: ''}
+          {authMode==='business' ? <MenuItem
+            component={Link}
+            to="/profile/business"
+            onClick={handleClose}
+          >
+            My account
+          </MenuItem>: ''}
         <MenuItem component={Link} to="/login" onClick={handleClose}>
-            Login
-          </MenuItem>
+          Login
+        </MenuItem>
         {/* {user.token ? (
           <MenuItem component={Link} to="/logout" onClick={handleClose}>
             Logout

@@ -5,10 +5,11 @@ import BusinessTabs from "./BusinessTabs.js";
 import config from "../config";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import {useParams} from 'react-router-dom'
+import { useParams } from "react-router-dom";
 
 function BusinessPage() {
   const business = useSelector((state) => state.business.business);
+  const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
   let { id } = useParams();
   useEffect(() => {
@@ -24,13 +25,11 @@ function BusinessPage() {
       });
     };
     getBusiness();
-
-    
   }, []);
   return (
     <div>
       <ControlledCarousel />
-      <BusinessHeader business={business}  />
+      <BusinessHeader business={business} rating={rating} />
       <BusinessTabs />
     </div>
   );
