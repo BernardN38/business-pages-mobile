@@ -29,12 +29,12 @@ function BusinessProfileHeader({ business }) {
         >
           <Avatar
             sx={{ height: "70px", width: "70px" }}
-            // src={business.profile_image_url}
+            src={businessProfile.profile_image_url}
           />
         </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" align="center">
-            Test
+           {businessProfile.name}
           </Typography>
         </CardContent>
         <Stack direction="row">

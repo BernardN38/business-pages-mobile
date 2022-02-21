@@ -1,6 +1,6 @@
 from urllib import response
 from flask import jsonify, make_response, request, Blueprint
-from models import Business, Offering, Review, User, BusinessReview, Message, DirectMessages, ReviewReply,Reply, MessagingIds, db
+from models import Business, Offering, Review, User, BusinessReview, Message, DirectMessages, ReviewReply,Reply, MessagingIds,BusinessOffering, db
 from auth_middleware import token_required, require_admin
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -133,7 +133,7 @@ def update_offering(id):
 
 @resources.delete('/api/offering/<id>')
 def delete_offering(id):
-    Offering.query.get(id).delete
+    offering = BusinessOffering.query.filter_by(offering_id=id).delete()
     db.session.commit()
     success_resp = {"message": f"delete of business successful with id: {id}"}
     return jsonify(success_resp)
@@ -158,11 +158,14 @@ def get_single_business_offerings(id):
 
 # all single ofering to a business by id
 @resources.post('/api/business-offering/<id>')
-def add_offering_business(id):
+@token_required
+def add_offering_business(current_user,id):
+    if str(current_user.id) != id:
+        return jsonify({'message':'unauthorized'}),401
     new_offering = Offering()
     for k, v in request.json.items():
         setattr(new_offering, k, v)
-    business = Business.query.get(id)
+    business = Business.query.get(current_user.id)
     business.business_offerings.append(new_offering)
     db.session.commit()
     return jsonify(business.serialize)
@@ -202,7 +205,9 @@ def get_all_users():
 @resources.get('/api/user/<id>')
 @token_required
 def get_single_user(current_user, id):
-    if id and current_user.id != int(id) and current_user.is_admin == False:
+    if not id:
+        id = current_user.id
+    if current_user.id != int(id) and current_user.is_admin == False:
         return jsonify('unathorized')
     user = User.query.get(id)
     resp = make_response(user.serialize)

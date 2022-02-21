@@ -92,7 +92,7 @@ class Business(db.Model):
 
 class Offering(db.Model):
     __tablename__ = 'offering'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True,)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(255), nullable=True)
     price = db.Column(db.Float, nullable=True)
@@ -111,6 +111,15 @@ class Offering(db.Model):
             'price': self.price,
             'image_url': self.image_url
         }
+
+class BusinessOffering(db.Model):
+    __tablename__ = 'business_offerings'
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column('business_id', db.Integer, db.ForeignKey(
+        'business.id'), primary_key=True)
+    offering_id = db.Column('offering_id', db.Integer, db.ForeignKey(
+        'offering.id'), primary_key=True)
 
 
 class Review(db.Model):

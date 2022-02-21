@@ -12,7 +12,7 @@ function OfferingCard({offering}) {
     <Card className='border border-dark m-1'>
       <CardMedia
         component="img"
-        height={150}
+        height={180}
         image={image_url}
       />
       <CardContent>
