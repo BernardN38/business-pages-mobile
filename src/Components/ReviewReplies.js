@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import config from "../config";
+import {v4 as uuid} from 'uuid';
 export default function ReviewReplies({ reviewId }) {
   const [replies, setReplies] = useState([]);
   const instance = axios.create({
@@ -25,7 +26,7 @@ export default function ReviewReplies({ reviewId }) {
       {replies.map((reply,idx) => {
         if (idx>4) return 
         return (
-          <Box sx={{borderTop:'1px solid black',borderBottom:'1px solid black', borderRadius:'2px', margin:'3px'}}>
+          <Box key={uuid()} sx={{borderTop:'1px solid black',borderBottom:'1px solid black', borderRadius:'2px', margin:'3px'}}>
             <CardContent>
               <Stack direction="row" className="d-flex align-items-center">
                 <Avatar src={reply.profile_image_url} />

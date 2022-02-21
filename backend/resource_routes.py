@@ -133,7 +133,8 @@ def update_offering(id):
 
 @resources.delete('/api/offering/<id>')
 def delete_offering(id):
-    offering = BusinessOffering.query.filter_by(offering_id=id).delete()
+    BusinessOffering.query.filter_by(offering_id=id).delete()
+    Offering.query.filter_by(id=id).delete()
     db.session.commit()
     success_resp = {"message": f"delete of business successful with id: {id}"}
     return jsonify(success_resp)

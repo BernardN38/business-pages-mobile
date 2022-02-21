@@ -9,18 +9,20 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
 import ReviewReply from "./ReviewReply";
+import Box from '@mui/material/Box'
 import ReviewReplies from "./ReviewReplies";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 export default function Review({
   reviewBody,
   username,
   title,
   rating,
   reviewId,
-  userProfileImage
+  userProfileImage,
 }) {
   const [open, setOpen] = useState(false);
-  const authMode = useSelector((state)=> state.auth.authMode)
+  const authMode = useSelector((state) => state.auth.authMode);
   return (
     <div className="p-2">
       <Card sx={{ minWidth: 275 }} className="border border-dark">
@@ -59,7 +61,16 @@ export default function Review({
           </Button>
         </CardActions>
         <Collapse in={open} timeout="auto" unmountOnExit>
-          {authMode === 'user' ? <ReviewReply reviewId={reviewId} />:'' }
+          {authMode != null ? (
+            <ReviewReply reviewId={reviewId} />
+          ) : (
+            <Box sx={{pl:'1rem'}}>
+              <Typography>
+                <Link to="/login"> Login to reply</Link>
+              </Typography>
+            </Box>
+          )}
+
           <ReviewReplies reviewId={reviewId} />
         </Collapse>
       </Card>

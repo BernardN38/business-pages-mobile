@@ -14,13 +14,13 @@ import { Typography } from "@mui/material";
 import MessageModal from "./MessageModal";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import config from "../config";
-
 function BusinessHeader({ business, link }) {
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
+  const authMode = useSelector((state) => state.auth.authMode);
   useEffect(() => {
     const getRating = () => {
       let sum = 0;
@@ -65,20 +65,20 @@ function BusinessHeader({ business, link }) {
           <Box>
             {business.phone_number ? (
               <Button>
-                <PhoneInTalkIcon>Call</PhoneInTalkIcon>
-                <Typography>Call</Typography>
+                <PhoneInTalkIcon/>
+                <Typography ><a href={`tel:+${business.phone_number}`}>Call</a></Typography>
               </Button>
             ) : (
               ""
             )}
-            <Button
+            {authMode === 'user' ? <Button
               onClick={() => {
                 setOpen(true);
               }}
             >
               <MailOutlineIcon />
               <span>Message</span>
-            </Button>
+            </Button>:''}
             <MessageModal open={open} setOpen={setOpen} />
           </Box>
         </Stack>

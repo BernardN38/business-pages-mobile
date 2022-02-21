@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React  from "react";
 import Review from "./Review";
 import Stack from "@mui/material/Stack";
 import ReviewModal from "./ReviewModal";
-
-import { useSelector, useDispatch } from "react-redux";
+import {v4 as uuid} from 'uuid';
+import { useSelector} from "react-redux";
 
 function Reviews() {
   const reviewList = useSelector((state) => state.reviews.reviewList);
@@ -11,10 +11,10 @@ function Reviews() {
   return (
     <Stack>
       {authMode === 'user' ? <ReviewModal />: ''}
-      {reviewList.map((review, idx) => {
+      {reviewList.map((review) => {
         return (
           <Review
-            key={review.review_id}
+            key={uuid()}
             reviewId={review.review_id}
             userProfileImage={review.user_profile_image}
             reviewBody={review.body}
