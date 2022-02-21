@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from models import  db, User,Review
 from flask_cors import CORS, cross_origin
 from keys import secret_key
@@ -7,7 +7,7 @@ from auth_routes import auth
 
 
 import logging
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='', static_folder='build')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -22,6 +22,9 @@ def after_request(response):
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
+@app.get('/')
+def home():
+    return send_from_directory(app.static_folder,'index.html')
 # reviews, offerings, business CRUD routes
 app.register_blueprint(resources)
 
