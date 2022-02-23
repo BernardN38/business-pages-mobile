@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import List from "@mui/material/List";
+import React, { useState } from "react";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
@@ -13,8 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import config from "../config";
-import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+
 
 export default function Message({ message }) {
   const [reply, setReply] = useState({ body: "" });

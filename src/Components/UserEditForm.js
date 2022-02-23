@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SimpleSnackbar from "./Snackbar";
 import config from "../config";
@@ -16,7 +16,6 @@ const theme = createTheme();
 export default function UserEditForm() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const user = useSelector((state) => state.user.user);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const instance = axios.create({
     withCredentials: true,

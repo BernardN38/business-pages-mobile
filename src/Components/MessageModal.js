@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import {
   FormControl,
@@ -31,7 +31,6 @@ const style = {
 
 export default function MessageModal({ open, setOpen }) {
   const business = useSelector((state) => state.business.business);
-  console.log(business.messaging_id);
   const [messageForm, setMessageForm] = useState({
     subject: "",
     body: "",
@@ -46,7 +45,6 @@ export default function MessageModal({ open, setOpen }) {
       reciever_id: business.messaging_id,
     };
     const json = JSON.stringify(data);
-    console.log(json);
     axios
       .post(`${config.serverUrl}/api/message`, json, {
         withCredentials: true,

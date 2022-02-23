@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import CommentIcon from "@mui/icons-material/Comment";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
@@ -18,28 +16,26 @@ import { useDispatch } from "react-redux";
 
 export default function BusinessProfileOfferings() {
   const businessProfile = useSelector((state) => state.business.profile);
-  console.log(businessProfile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
-  const handleClick = (e) =>{
-    const {value } = e.currentTarget
-    axios.delete(`${config.serverUrl}/api/offering/${value}`).then((resp)=>{
+  const handleClick = (e) => {
+    const { value } = e.currentTarget;
+    axios.delete(`${config.serverUrl}/api/offering/${value}`).then((resp) => {
       if (resp.status === 200) {
-        axios.get(`${config.serverUrl}/api/business/${businessProfile.business_id}/profile`, {withCredentials:true}).then((resp)=>{
-          dispatch({ type: "SET_BUSINESS_PROFILE", payload: resp.data });
-          navigate('/profile/business')
-        })
+        axios
+          .get(
+            `${config.serverUrl}/api/business/${businessProfile.business_id}/profile`,
+            { withCredentials: true }
+          )
+          .then((resp) => {
+            dispatch({ type: "SET_BUSINESS_PROFILE", payload: resp.data });
+            navigate("/profile/business");
+          });
       }
-    })
-  }
-  useEffect(() => {
-    console.log(businessProfile.business_offerings)
-    // axios.get(`${config.serverUrl}/api/business-offerings/${businessProfile.business_id}`).then((resp)=>{
-    //   console.log(resp.data.offerings)
-    // })
-  });
+    });
+  };
+
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       <Typography align="center" variant="h5">
@@ -53,9 +49,9 @@ export default function BusinessProfileOfferings() {
           sx={{ margin: "2px" }}
           secondaryAction={
             <Box>
-              <IconButton value={item.id} onClick={handleClick}>
+              {/* <IconButton value={item.id} onClick={handleClick}>
                 <EditIcon />
-              </IconButton>
+              </IconButton> */}
               <IconButton value={item.id} onClick={handleClick}>
                 <HighlightOffIcon />
               </IconButton>

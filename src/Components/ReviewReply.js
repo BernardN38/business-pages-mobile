@@ -13,7 +13,7 @@ export default function ReviewReply({reviewId}) {
     const handleClick = (e) =>{
         const json = JSON.stringify(reply)
         console.log(json)
-       axios.post(`${config.serverUrl}/api/review/${reviewId}/reply`, json, {withCredentials: true, baseURL:'http://localhost:3000', headers: {
+       axios.post(`${config.serverUrl}/api/review/${reviewId}/reply`, json, {withCredentials: true, headers: {
         // Overwrite Axios's automatically set Content-Type
         'Content-Type': 'application/json'
       }} ).then((resp)=>{

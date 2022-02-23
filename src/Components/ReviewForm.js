@@ -13,7 +13,6 @@ import {
 import Rating from "@mui/material/Rating";
 import { useSelector, useDispatch } from "react-redux";
 import config from "../config";
-import { useNavigate } from "react-router-dom";
 
 function ReviewForm({ open, setOpen }) {
   const [reviewForm, setReviewForm] = useState({
@@ -23,7 +22,6 @@ function ReviewForm({ open, setOpen }) {
   });
   const business = useSelector((state) => state.business.business);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const handleSubmit = (e) => {
     const json = JSON.stringify(reviewForm);
     axios

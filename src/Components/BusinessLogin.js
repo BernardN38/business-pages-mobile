@@ -50,6 +50,9 @@ export default function BusinessLogin() {
       });
     
   };
+  const businessSignup = () => {
+    navigate("/business/signup");
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -114,7 +117,7 @@ export default function BusinessLogin() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/business/signup" variant="body2">
+                <Link onClick={businessSignup} variant="body2">
                   {"Don't have an Business Account? Sign Up"}
                 </Link>
               </Grid>

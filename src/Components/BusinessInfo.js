@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 
 function BuinessInfo() {
   const business = useSelector((state) => state.business.business);
-  const [dense, setDense] = React.useState(false);
   const listItems = [];
   for (let [key, val] of Object.entries(business)) {
     const fields = ["name", "description", "address", "phone_number"];
@@ -22,11 +21,11 @@ function BuinessInfo() {
       );
     }
   }
-  console.log(listItems);
+
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
       <Grid item xs={12} md={6}>
-        <List dense={dense}>
+        <List dense={false}>
           {listItems.map((el) => {
             return el;
           })}

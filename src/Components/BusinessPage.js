@@ -12,7 +12,7 @@ function BusinessPage() {
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
   let { id } = useParams();
-  console.log(business)
+
   useEffect(() => {
     const getBusiness = async () => {
       const business_req = await axios.get(
@@ -25,7 +25,7 @@ function BusinessPage() {
       });
     };
     getBusiness();
-  }, []);
+  }, [dispatch,id]);
   return (
     <div>
       <ControlledCarousel carouselImages={business.carousel_images} />

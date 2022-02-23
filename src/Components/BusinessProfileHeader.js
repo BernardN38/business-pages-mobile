@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import "../css/user-profile-header.css";
 import { useSelector } from "react-redux";
-import capitalize from "../helpers/capitalize";
+
 
 function BusinessProfileHeader() {
   const [rating, setRating] = useState(0);
@@ -51,7 +49,7 @@ function BusinessProfileHeader() {
           <div className="user-header-badge">
             Reviews: {businessProfile.business_reviews.length}
           </div>
-          <div className="user-header-badge">Average Rating {rating}</div>
+          <div className="user-header-badge">Average Rating {Math.round(rating * 100) / 100}</div>
           <div className="user-header-badge"></div>
         </Stack>
       </Card>

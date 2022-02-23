@@ -1,13 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import ReviewForm from './ReviewForm'
-import axios from 'axios';
-import { useSelector } from 'react-redux'
 const style = {
   position: 'absolute',
   top: '50%',

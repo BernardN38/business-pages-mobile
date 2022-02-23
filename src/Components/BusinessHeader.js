@@ -32,15 +32,15 @@ function BusinessHeader({ business, link }) {
     } else {
       setRating(0);
     }
-  });
+  },[business.business_reviews]);
   return (
     <Container className="p-1">
       <div className="business-header-main">
         <Stack direction="row" spacing={2}>
           <Avatar sx={{ height: "70px", width: "70px" }}>
-            <img src={business.profile_image_url} width="70"></img>
+            <img src={business.profile_image_url} width="70" alt='business_profile'></img>
           </Avatar>
-          <div>
+          <Box >
             {link ? (
               <Link to={`/business/${business.business_id}`}>
                 {business.name || "Business Name"}
@@ -49,7 +49,7 @@ function BusinessHeader({ business, link }) {
               <h5>{business.name || "Business Name"}</h5>
             )}
             <p>{business.description || "Welcome to Our Page"}</p>
-          </div>
+          </Box>
         </Stack>
         <Stack direction="row" spacing={3} className="h-75" width="100%">
           <Box className="d-flex justify-content-center align-items-center">

@@ -67,7 +67,7 @@ export default function BasicTabs() {
             variant="fullWidth"
           >
             <Tab label="Reviews" {...a11yProps(0)} />
-            <Tab label="Services" {...a11yProps(1)} />
+            <Tab label="Offerings" {...a11yProps(1)} />
             <Tab label="Info" {...a11yProps(2)} />
           </Tabs>
         </Box>
