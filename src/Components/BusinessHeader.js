@@ -9,14 +9,11 @@ import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import "../css/businessheader.css";
-import capitalize from "../helpers/capitalize";
 import { Typography } from "@mui/material";
 import MessageModal from "./MessageModal";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import config from "../config";
+import { useSelector } from "react-redux";
+
 function BusinessHeader({ business, link }) {
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);

@@ -10,11 +10,10 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import BusinessMessages from "./BusinessMessages";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { Link } from "react-router-dom";
-import AddIcon from '@mui/icons-material/Add';
-
+import AddIcon from "@mui/icons-material/Add";
 
 export default function BusinessProfileBody() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -32,11 +31,17 @@ export default function BusinessProfileBody() {
         </ListItemIcon>
         <ListItemText primary="Edit Profile" />
       </ListItemButton>
-      <ListItemButton  component={Link} to="/profile/business/offerings">
+      <ListItemButton component={Link} to="/profile/business/offerings">
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="Add Business Offerings" />
+      </ListItemButton>
+      <ListItemButton component={Link} to="/profile/business/carousel">
+        <ListItemIcon>
+          <AddIcon />
+        </ListItemIcon>
+        <ListItemText primary="Edit Header Images" />
       </ListItemButton>
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>

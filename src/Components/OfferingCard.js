@@ -10,11 +10,11 @@ function OfferingCard({offering}) {
   
   return (
     <Card className='border border-dark m-1'>
-      <CardMedia
+      {image_url ? <CardMedia
         component="img"
         height={180}
         image={image_url}
-      />
+      />: ''}
       <CardContent>
         <Stack direction="row" className="d-flex align-items-center justify-content-between">
           <Typography variant="h5" component="div" className='mr-5'>

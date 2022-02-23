@@ -12,12 +12,12 @@ function BusinessPage() {
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
   let { id } = useParams();
+  console.log(business)
   useEffect(() => {
     const getBusiness = async () => {
       const business_req = await axios.get(
         `${config.serverUrl}/api/business/${id}`
       );
-
       dispatch({ type: "SET_BUSINESS", payload: business_req.data });
       dispatch({
         type: "SET_REVIEWS",
@@ -28,7 +28,7 @@ function BusinessPage() {
   }, []);
   return (
     <div>
-      <ControlledCarousel />
+      <ControlledCarousel carouselImages={business.carousel_images} />
       <BusinessHeader business={business} rating={rating} />
       <BusinessTabs />
     </div>

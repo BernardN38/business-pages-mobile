@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -6,11 +6,21 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import "../css/user-profile-header.css";
-import {useSelector} from 'react-redux'; 
-function BusinessProfileHeader({ business }) {
+import { useSelector } from "react-redux";
+import capitalize from "../helpers/capitalize";
+
+function BusinessProfileHeader() {
+  const [rating, setRating] = useState(0);
   const businessProfile = useSelector((state) => state.business.profile);
-  
-  console.log(businessProfile)
+  useEffect(() => {
+    let averageRating = 0;
+    businessProfile.business_reviews.map((review) => {
+      averageRating += review.rating;
+    });
+    if (businessProfile.business_reviews.length > 0) {
+      setRating(averageRating / businessProfile.business_reviews.length);
+    }
+  }, []);
   return (
     <Box
       display="flex"
@@ -28,21 +38,21 @@ function BusinessProfileHeader({ business }) {
           padding={1}
         >
           <Avatar
-            sx={{ height: "70px", width: "70px" }}
+            sx={{ height: "120px", width: "120px" }}
             src={businessProfile.profile_image_url}
           />
         </Box>
-        <CardContent>
+        {/* <CardContent>
           <Typography gutterBottom variant="h5" component="div" align="center">
-           {businessProfile.name}
+            {capitalize(businessProfile.name)}
           </Typography>
-        </CardContent>
+        </CardContent> */}
         <Stack direction="row">
-          <div className="user-header-badge">Score: 10</div>
           <div className="user-header-badge">
-            Reviews: 10
+            Reviews: {businessProfile.business_reviews.length}
           </div>
-          <div className="user-header-badge">Rank: 10</div>
+          <div className="user-header-badge">Average Rating {rating}</div>
+          <div className="user-header-badge"></div>
         </Stack>
       </Card>
     </Box>

@@ -2,7 +2,6 @@ import {
   Routes,
   Route,
   BrowserRouter,
-  Link,
   Navigate,
   Outlet,
 } from "react-router-dom";
@@ -22,6 +21,7 @@ import BusinessLogin from "./Components/BusinessLogin";
 import BusinessProfile from "./Components/BusinessProfile";
 import BusinessEditForm from "./Components/BusinessEditForm";
 import BusinessProfileOfferings from "./Components/BusinessProfileOfferings";
+import CarouselEdit from "./Components/CarouselEdit";
 export default function App() {
   return (
     <BrowserRouter>
@@ -43,6 +43,7 @@ export default function App() {
             <Route path="/profile/business" element={<BusinessProfile />} />
             <Route path='/profile/business/edit' element={<BusinessEditForm/>}/>
             <Route path='/profile/business/offerings' element={<BusinessProfileOfferings/>}/>
+            <Route path='/profile/business/carousel' element={<CarouselEdit/>}/>
           </Route>
           {/* <Route
           path="/private-nested"
@@ -68,17 +69,17 @@ function PrivateOutletBusiness() {
   return auth === "business" ? <Outlet /> : <Navigate to="/business/login" />;
 }
 
-function PrivateRoute({ children }) {
-  const auth = useAuth();
-  return auth ? children : <Navigate to="/login" />;
-}
+// function PrivateRoute({ children }) {
+//   const auth = useAuth();
+//   return auth ? children : <Navigate to="/login" />;
+// }
 
 function useAuth() {
   const authMode = useSelector((state)=> state.auth.authMode)
   console.log(authMode)
-  if (authMode == 'user') {
+  if (authMode === 'user') {
     return "user";
-  } else if (authMode == 'business') {
+  } else if (authMode === 'business') {
     return "business";
   } else {
     return false;

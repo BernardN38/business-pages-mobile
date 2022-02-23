@@ -3,7 +3,7 @@ import OfferingCard from "./OfferingCard"
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import config from "../config";
-
+import {v4 as uuid} from 'uuid'
 function BusinessOfferings() {
   const [offerings, setOfferings] = useState([]);
   const business = useSelector((state) => state.business.business)
@@ -16,8 +16,8 @@ function BusinessOfferings() {
     getOfferings()
   }, [])
   return <div>
-    {offerings.map((offering, idx) => {
-      return <OfferingCard key={idx} offering={offering} />
+    {offerings.map((offering) => {
+      return <OfferingCard key={uuid()} offering={offering} />
     })}
 
   </div>;

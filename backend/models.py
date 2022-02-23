@@ -24,6 +24,11 @@ review_replies = db.Table('review_reply',
                               'business_reviews.id')),
                           db.Column('reply_id', db.Integer, db.ForeignKey(
                               'reply.id')))
+
+# carousel_image = db.Table('carousel_image',
+#                           db.Column('business_id', db.Integer, db.ForeignKey('business.id')),
+#                           db.Column('image_url', db.String)
+# )
 # user_direct_messages = db.Table('direct_messags',
 #                             db.Column('business_id', db.Integer, db.ForeignKey(
 #                                 'business.id')),
@@ -32,6 +37,23 @@ review_replies = db.Table('review_reply',
 #                             db.Column('message_id', db.Integer, db.ForeignKey(
 #                                 'message.id')),
 #                             )
+
+
+class CarouselImage(db.Model):
+    __tablename__ = 'carousel_image'
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column('business_id', db.String,
+                            db.ForeignKey('business.id'))
+    image_url = db.Column(db.String(2048))
+
+    @property
+    def serialize(self):
+        return {
+            'id':self.id,
+            'business_id': self.business_id,
+            'image_url':self.image_url
+        }
 
 
 class Business(db.Model):
@@ -52,6 +74,8 @@ class Business(db.Model):
                                          backref=db.backref('Business', lazy=True))
     business_reviews = db.relationship('Review', secondary=business_reviews, lazy='joined',
                                        backref=db.backref('Business', lazy=True))
+    
+
     def __repr__(self):
         return '<Name %r>' % self.name
 
@@ -69,7 +93,8 @@ class Business(db.Model):
             'rating': self.rating,
             'address': self.address,
             'business_offerings': [offering.serialize for offering in self.business_offerings if offering],
-            'business_reviews': [review.serialize for review in self.business_reviews if review]
+            'business_reviews': [review.serialize for review in self.business_reviews if review],
+            'carousel_images': [image.image_url for image in CarouselImage.query.filter_by(business_id=self.id)]
         }
 
     @property
@@ -111,6 +136,7 @@ class Offering(db.Model):
             'price': self.price,
             'image_url': self.image_url
         }
+
 
 class BusinessOffering(db.Model):
     __tablename__ = 'business_offerings'
@@ -234,7 +260,8 @@ class DirectMessages(db.Model):
         'messaging_ids.id'))
     reciever_id = db.Column('reciever_id', db.Integer, db.ForeignKey(
         'messaging_ids.id'))
-    previous_message_id = db.Column('previous_message_id', db.Integer, nullable=True)
+    previous_message_id = db.Column(
+        'previous_message_id', db.Integer, nullable=True)
     message_data = db.relationship(
         'Message', backref='DirectMessages', lazy='joined')
     # business_data = db.relationship('Business', lazy='joined')

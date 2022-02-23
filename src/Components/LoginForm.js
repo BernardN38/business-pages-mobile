@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -13,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import {  useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SimpleSnackbar from "./Snackbar";
 import config from "../config";
@@ -21,7 +22,7 @@ import config from "../config";
 const theme = createTheme();
 
 export default function LoginForm() {
-  const [open,setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,20 +35,23 @@ export default function LoginForm() {
         withCredentials: true,
       })
       .then((resp) => {
-        console.log(resp)
+        console.log(resp);
         if (resp.status === 200) {
-          localStorage.setItem('token',JSON.stringify(resp.data.token))
+          localStorage.setItem("token", JSON.stringify(resp.data.token));
           dispatch({ type: "SET_USER", payload: resp.data });
           dispatch({ type: "SET_LOGIN_SUCCESS", payload: true });
-          dispatch({ type: "SET_AUTH_MODE", payload: 'user' });
+          dispatch({ type: "SET_AUTH_MODE", payload: "user" });
           navigate("/");
         }
-      }).catch((error) => {
-          console.log(error.response.data)
-          setOpen(true)
-      });;
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        setOpen(true);
+      });
   };
-
+  const businessLogin = () => {
+    navigate("/business/login");
+  };
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -118,12 +122,10 @@ export default function LoginForm() {
             </Grid>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  
-                </Link>
+                <Link href="#" variant="body2"></Link>
               </Grid>
-              <Grid item>
-                <Link href="/business/login" variant="body2">
+              <Grid>
+                <Link onClick={businessLogin} variant="body2">
                   Business Login
                 </Link>
               </Grid>
@@ -135,7 +137,7 @@ export default function LoginForm() {
           open={open}
           setOpen={setOpen}
           message="Login Failure"
-          severity='error'
+          severity="error"
         />
       </Container>
     </ThemeProvider>

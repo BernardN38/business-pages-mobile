@@ -8,7 +8,8 @@ from auth_routes import auth
 
 import logging
 app = Flask(__name__,static_url_path='', static_folder='build')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://trkxphvauovftw:01cf83a066ab424853b9a45ab3984e085629551994459d7e55a52c6976cb847b@ec2-18-215-8-186.compute-1.amazonaws.com:5432/d12sn9dq303e70'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['JSON_SORT_KEYS'] = False

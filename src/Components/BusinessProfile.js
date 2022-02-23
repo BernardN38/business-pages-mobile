@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import BusinessProfileBody from "./BusinessProfileBody";
 import config from "../config";
 export default function BusinessProfile() {
-  const [business, setBusiness] = useState({});
   const businessToken = useSelector((state) => state.business.token);
   const dispatch = useDispatch();
   const instance = axios.create({

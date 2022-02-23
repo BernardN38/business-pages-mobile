@@ -1,4 +1,4 @@
 const config = {
-    serverUrl: 'https://business-pages.herokuapp.com/'
+    serverUrl: 'http://192.168.0.10:5000'
 }
 export default  config 
