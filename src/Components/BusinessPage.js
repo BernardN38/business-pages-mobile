@@ -25,7 +25,8 @@ function BusinessPage() {
       });
     };
     getBusiness();
-  }, [dispatch,id]);
+  }, [dispatch, id]);
+
   return (
     <div>
       <ControlledCarousel carouselImages={business.carousel_images} />

@@ -105,7 +105,8 @@ def business_login():
 @auth.post('/signup')
 def signup():
     data = request.form
-    username, password = data.get('username'), data.get('password');
+    print(data)
+    username, password = data.get('username'), data.get('password')
     print(username,password)
     if not username and password:
         return make_response('no username or password provided'),400
@@ -131,7 +132,7 @@ def signup():
             'exp': datetime.utcnow() + timedelta(hours=24)
         }, secret_key, algorithm="HS256")
         resp =  make_response(jsonify({'token': jwt.decode(token, secret_key, algorithms="HS256")}), 201)
-        resp.set_cookie('Bearer', value =  token, httponly = True, samesite='Lax')
+        resp.set_cookie('Bearer', value =  token, httponly = True, samesite='None', secure=True)
 
         return resp
     else:

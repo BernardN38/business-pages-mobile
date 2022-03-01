@@ -17,6 +17,7 @@ export default function BusinessEditForm() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
+  
   const instance = axios.create({
     withCredentials: true,
     baseURL: "http://localhost:5000/",
@@ -70,7 +71,6 @@ export default function BusinessEditForm() {
               id="description"
               label="Description"
               name="description"
-          
               autoFocus
             />
             <TextField
