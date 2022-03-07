@@ -1,7 +1,7 @@
 # Business Pages
 
 
-![GitHub last commit](https://github.com/BernardN38/business-pages-mobile)
+![GitHub last commit](https://img.shields.io/github/last-commit/bernardn38/business-pages-mobile)
 ![Lines of code](https://img.shields.io/tokei/lines/github/bernardn38/business-pages-mobile)
 ![GitHub language count](https://img.shields.io/github/languages/count/bernardn38/business-pages-mobile?color=red)
 
