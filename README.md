@@ -1,70 +1,106 @@
-# Getting Started with Create React App
+# Business Pages
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+![GitHub last commit](https://github.com/BernardN38/business-pages-mobile)
+![Lines of code](https://github.com/BernardN38/business-pages-mobile)
+![GitHub language count](https://img.shields.io/github/languages/count/azeporo/splishsplash?color=red)
 
-In the project directory, you can run:
 
-### `npm start`
+The application is a Mobile-First web application meant to connect business owners and customers. Businesses can publish their page on the website by providing basic information such as business name, phone number, description, images to display on the profile page. Businesses can also publish their offerings along with images description and a price for quick viewing from potential customers. Users can make an account to enable them to edit their profile and leave reviews on businesses. Business and User accounts can also send direct messages back and forth. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Demo-Preview
+To view or demo the live application simply click [here](https://business-pages.herokuapp.com/).
 
-### `npm test`
+# Table of contents
+- [Description](#SplishSplash)
+- [Demo-Preview](#demo-preview)
+- [Table of contents](#table-of-contents)
+- [Installation](#installation)
+- [Development](#development)
+- [Author](#author)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Installation
 
-### `npm run build`
+The following set of instructions will allow you to clone the application and run it locally on your device. Note that all of the following lines of code are ran in the terminal.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. From within the terminal, `cd` into the directory of your choice and run the following command:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ```
+    git clone https://github.com/BernardN38/business-pages-mobile
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. `cd` into the the application: 
+	
+	```
+	cd business-pages-mobile
+	```
 
-### `npm run eject`
+3. Install the dependecies:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+	```
+	npm install 
+	```
+	
+4. Start the application on local host:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+	```
+	npm start
+	```
+	
+5. Note that the app will open up on local host 3000 (http://localhost:3000/).
+	
+Instructions to start the Flask server locally
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. `cd` into the the application: 
+	
+	```
+	cd backend
+	```
+2. Install/Activate virtual enviroment: 
+	
+	```
+	python -m venv venv
+  source venv/bin/activate
+	```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+3. Install the dependecies:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+	```
+	pip install -r requirements.txt 
+	```
+	
+4. Start the application on local host:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+	```
+	flask run app.py
+	```
+	
+5. Note that the app will open up on local host 5000 (http://localhost:5000/).
+	
+[(Back to top)](#table-of-contents)
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+# Development
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+<img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original.svg" alt="HTML Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-original.svg" alt="JavaScript Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/sass/sass-original.svg" alt="SASS Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="React Logo" height="50px" width="50px">
+<img src="https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-original.svg" alt="Nodejs Logo" height="50px" width="50px">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+[(Back to top)](#table-of-contents)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Author
+
+The application was developed by a Bernardo Narvaez.
+
+Bernardo Narvaez is a growth-oriented Full-stack Developer. Highly self-motivated. Skilled at problem solving and seeking multiple solutions to issues. Paying attention to details, while keeping an eye on long term goals.
+[erisboxx@gmail.com](erisboxx@gmail.com)
+
+[(Back to top)](#table-of-contents)
