@@ -3,7 +3,7 @@
 
 ![GitHub last commit](https://github.com/BernardN38/business-pages-mobile)
 ![Lines of code](https://img.shields.io/tokei/lines/github/bernardn38/business-pages-mobile)
-![GitHub language count](https://img.shields.io/github/languages/count/azeporo/splishsplash?color=red)
+![GitHub language count](https://img.shields.io/github/languages/count/bernardn38/business-pages-mobile?color=red)
 
 
 The application is a Mobile-First web application meant to connect business owners and customers. Businesses can publish their page on the website by providing basic information such as business name, phone number, description, images to display on the profile page. Businesses can also publish their offerings along with images description and a price for quick viewing from potential customers. Users can make an account to enable them to edit their profile and leave reviews on businesses. Business and User accounts can also send direct messages back and forth. 
