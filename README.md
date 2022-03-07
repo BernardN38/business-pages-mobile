@@ -88,7 +88,7 @@ Instructions to start the Flask server locally
 
 
 
-<img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original.svg" alt="HTML Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-original.svg" alt="JavaScript Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/sass/sass-original.svg" alt="SASS Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="React Logo" height="50px" width="50px">
+<img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original.svg" alt="HTML Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-original.svg" alt="JavaScript Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/flaskflask-original.svg" alt="SASS Logo" height="50px" width="50px"><img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="React Logo" height="50px" width="50px">
 <img src="https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-original.svg" alt="Nodejs Logo" height="50px" width="50px">
 
 
