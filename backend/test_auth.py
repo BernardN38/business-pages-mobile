@@ -1,73 +1,11 @@
-# try:
-#     from flask import Flask
-#
-#     import unittest
-#     import jwt
-#     from keys import secret_key
-#     from models import User, Business
-#     from flask_sqlalchemy import SQLAlchemy
-# except Exception as e:
-#     print(f'some modules missing {e}')
-
-# app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy()
-# db.init_app(app)
-# app.register_blueprint(auth)
-# class FlaskTest(unittest.TestCase):
-
-
-#     def test_auth_user_login(self):
-#         tester = app.test_client(self)
-#         response = tester.post(
-#             '/login', data={"username": "eris", "password": "password"})
-#         token = response.headers['Set-Cookie'].split(';')[0].split('=')[1]
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTrue('Set-Cookie' in response.headers)
-#         self.assertTrue(jwt.decode(token, secret_key,
-#                         algorithms="HS256")['user_id'] == 1)
-
-#     def test_auth_business_login(self):
-#         tester = app.test_client(self)
-#         response = tester.post(
-#             '/business/login', data={'email': 'test2@gmail.com', "password": "password"})
-#         token = response.headers['Set-Cookie'].split(';')[0].split('=')[1]
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTrue('Set-Cookie' in response.headers)
-#         self.assertTrue('business_id' in jwt.decode(token, secret_key, algorithms="HS256"))
-
-#     def test_auth_signup(self):
-#         tester = app.test_client(self)
-#         response = tester.post(
-#             '/signup', data={'username': 'testuser123', "password": "password123"})
-#         print(response.headers)
-#         self.assertEqual(response.status_code, 201)
-#         # self.assertTrue('Set-Cookie' in response.headers)
-#         # self.assertTrue('user_id' in jwt.decode(token, secret_key, algorithms="HS256"))
-
-#     def tearDown(self):
-
-#         with app.app_context():
-#             user = User.query.filter_by(username='testuser123').delete()
-#             print(user)
-#             db.session.commit()
-
-
-# if __name__ == "__main__":
-#     unittest.main()
-
-
 import pytest
 import jwt
+from werkzeug.security import generate_password_hash, check_password_hash
 from keys import secret_key
-from app import create_app
+from app import create_app, db
 from auth_routes import auth
-from flask_sqlalchemy import SQLAlchemy
-from models import User
+from models import User, Business
 
-db = SQLAlchemy()
-    
 
 @pytest.fixture()
 def app():
@@ -76,17 +14,28 @@ def app():
     app.config.update({
         "TESTING": True,
     })
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages'
-    db.init_app(app)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages_test'
+    with app.app_context():
+        db.init_app(app)
     # other setup can go here
+
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        test_user = User(username="test_user",
+                         password=generate_password_hash('test_password'))
+        test_business = Business(email="testbusiness@gmail.com", name='test_business', description="test business description",
+                                 business_type="food", password=generate_password_hash('test_password'))
+        db.session.add(test_business)
+        db.session.add(test_user)
+        db.session.commit()
 
     yield app
 
-    with app.app_context():
-        user =  User.query.filter_by(username='testuser123').delete()
-        db.session.commit()
-        print(user)
     # clean up / reset resources here
+    with app.app_context():
+        db.session.remove()
+        db.drop_all()
 
 
 @pytest.fixture()
@@ -99,29 +48,53 @@ def runner(app):
     return app.test_cli_runner()
 
 
-def test_auth_user_login(client):
-    response = client.post(
-        '/login', data={"username": "eris", "password": "password"})
-    token = response.headers['Set-Cookie'].split(';')[0].split('=')[1]
-    assert response.status_code == 200
-    assert 'Set-Cookie' in response.headers
-    assert jwt.decode(token, secret_key, algorithms="HS256")['user_id'] == 1
+class TestClass:
 
+    def test_auth_user_signup(self, client, app):
+        response = client.post(
+            '/signup', data={'username': 'testuser123', "password": "password123"})
 
-def test_auth_business_login(client):
+        # check created status code
+        assert response.status_code == 201
 
-    response = client.post(
-        '/business/login', data={'email': 'test2@gmail.com', "password": "password"})
-    token = response.headers['Set-Cookie'].split(';')[0].split('=')[1]
-    assert response.status_code == 200
-    assert 'Set-Cookie' in response.headers
-    assert 'business_id' in jwt.decode(
-        token, secret_key, algorithms="HS256")
+        # check user in database
+        with app.app_context():
+            assert User.query.filter_by(username='testuser123').first()
 
+    def test_auth_user_login(self, client):
+        response = client.post(
+            '/login', data={"username": "test_user", "password": "test_password"})
+        token = response.headers['Set-Cookie'].split(';')[0].split('=')[1]
 
-def test_auth_signup(client):
-    response = client.post(
-        '/signup', data={'username': 'testuser123', "password": "password123"})
-    print(response.headers)
-    assert response.status_code == 201
+        # check success status code
+        assert response.status_code == 200
+        # check jwt token set properly
+        assert 'Set-Cookie' in response.headers
+        assert jwt.decode(token, secret_key, algorithms="HS256")[
+            'user_id'] == 1
 
+    def test_auth_business_signup(self, client, app):
+        response = client.post(
+            '/api/business/signup', data={'email': "testbusiness2@gmail.com", 'name': 'test_business2', 'description': "test business description",
+                                          'business_type': "food", 'password': 'test_password'})
+        print(response)
+        # check success status code
+        assert response.status_code == 201
+
+        with app.app_context():
+            assert Business.query.filter_by(
+                email='testbusiness2@gmail.com').first()
+
+    def test_auth_business_login(self, client):
+
+        response = client.post(
+            '/business/login', data={'email': "testbusiness@gmail.com", "password": "test_password"})
+        token = response.headers['Set-Cookie'].split(';')[0].split('=')[1]
+
+        # check success status code
+        assert response.status_code == 200
+
+        # check jwt token set properly
+        assert 'Set-Cookie' in response.headers
+        assert 'business_id' in jwt.decode(
+            token, secret_key, algorithms="HS256")

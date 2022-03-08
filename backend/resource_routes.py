@@ -11,36 +11,6 @@ resources = Blueprint('resources', __name__)
 CORS(resources,  supports_credentials=True)
 
 
-# @resources.post("/api/business")
-# def create_business():
-#     new_business = Business()
-#     for k, v in request.json.items():
-#         setattr(new_business, k, v)
-#     db.session.add(new_business)
-#     db.session.commit()
-
-#     return jsonify(new_business.serialize)
-
-@resources.post("/api/business/signup")
-def create_business():
-    new_business = Business()
-    for k, v in request.form.items():
-        setattr(new_business, k, v)
-    if request.form.get('password'):
-        new_business.password = generate_password_hash(
-            request.form['password'])
-    new_messaging_id = MessagingIds(name=request.form['name'])
-    db.session.add(new_messaging_id)
-    db.session.commit()
-    new_business.messaging_id = new_messaging_id.id
-    db.session.add(new_business)
-    db.session.commit()
-
-    return jsonify(new_business.serialize), 201
-
-# get list of all businesses
-
-
 @resources.get("/api/business")
 def get_businesses():
     business_type = request.args['business_type']
@@ -69,19 +39,16 @@ def get_business_profile(user, business_id):
     business = user.serialize
     business['messages'] = [
         message.serialize for message in messages if message]
-    print(business['messages'])
-    # business = Business.query.get(id)
-    # if not business:
-    #     return jsonify({'message': f'no business found with id {id}'})
-    # print(business)
     return jsonify(business)
 
 # update existing business
 
 
 @resources.patch("/api/business/<id>")
-def update_business(id):
-    existingBusiness = Business.query.get(id)
+@token_required
+def update_business(user, id):
+    print(request.json,'json')
+    existingBusiness = Business.query.get(user.id)
     for k, v in request.json.items():
         setattr(existingBusiness, k, v)
     db.session.commit()
@@ -91,8 +58,9 @@ def update_business(id):
 
 
 @resources.delete("/api/business/<id>")
-def delete_business(id):
-    Business.query.filter_by(id=id).delete()
+@token_required
+def delete_business(user,id):
+    Business.query.filter_by(id=user.id).delete()
     db.session.commit()
     success_resp = {"message": f"delete of business successful with id: {id}"}
     return jsonify(success_resp)
@@ -105,7 +73,7 @@ def delete_business(id):
 def get_offering(id):
     offering = Offering.query.get(id)
     if not offering:
-        return jsonify({'message': f'no offering found with id {id}'})
+        return jsonify({'message': f'no offering found with id {id}'}), 404
     return jsonify(offering.serialize)
 
 # create offering
@@ -118,7 +86,7 @@ def create_offering():
         setattr(new_offering, k, v)
     db.session.add(new_offering)
     db.session.commit()
-    return jsonify(new_offering.serialize)
+    return jsonify(new_offering.serialize), 201
 
 # update existing offering
 
@@ -180,7 +148,7 @@ def add_offering_business(current_user, id):
 
 @resources.delete('/api/business-offering/<id>')
 def delete_business_offering(id):
-    Offering.query.get(id).delete
+    Offering.query.filter_by(id=id).delete()
     db.session.commit()
     success_resp = {
         "message": f"delete of business offering successful with id: {id}"}

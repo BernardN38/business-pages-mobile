@@ -12,7 +12,7 @@ def create_app():
 
 
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///business_pages'
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'postgresql:///business_pages'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = False
     app.config['JSON_SORT_KEYS'] = False

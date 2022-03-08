@@ -138,6 +138,23 @@ def signup():
     else:
         return make_response('User already exists. Please Log in.', 202)
 
+@auth.post("/api/business/signup")
+def create_business():
+    new_business = Business()
+    for k, v in request.form.items():
+        setattr(new_business, k, v)
+    if request.form.get('password'):
+        new_business.password = generate_password_hash(
+            request.form['password'])
+    new_messaging_id = MessagingIds(name=request.form['name'])
+    db.session.add(new_messaging_id)
+    db.session.commit()
+    new_business.messaging_id = new_messaging_id.id
+    db.session.add(new_business)
+    db.session.commit()
+
+    return jsonify(new_business.serialize), 201
+
 @auth.get('/api/checkin')
 @token_required
 def test_auth(token_user):

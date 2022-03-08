@@ -43,7 +43,7 @@ class CarouselImage(db.Model):
     __tablename__ = 'carousel_image'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    business_id = db.Column('business_id', db.String,
+    business_id = db.Column('business_id', db.Integer,
                             db.ForeignKey('business.id'))
     image_url = db.Column(db.String(2048))
 
@@ -141,7 +141,7 @@ class Offering(db.Model):
 class BusinessOffering(db.Model):
     __tablename__ = 'business_offerings'
     __table_args__ = {'extend_existing': True}
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     business_id = db.Column('business_id', db.Integer, db.ForeignKey(
         'business.id'), primary_key=True)
     offering_id = db.Column('offering_id', db.Integer, db.ForeignKey(
@@ -315,7 +315,7 @@ class ReviewReply (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     business_review_id = db.Column('business_review_id', db.Integer, db.ForeignKey(
         'business_reviews.id'))
-    reply_id = db.Column('reply_id', db.String, db.ForeignKey('reply.id'))
+    reply_id = db.Column('reply_id', db.Integer, db.ForeignKey('reply.id'))
     # reply = db.relationship('Reply', backref='ReviewReply', lazy='joined', overlaps="BusinessReview,replies")
 
     @property
