@@ -54,7 +54,6 @@ CREATE TABLE public.business_offerings (
 
 
 ALTER TABLE public.business_offerings OWNER TO eris;
-
 --
 -- Name: business_offerings_id_seq; Type: SEQUENCE; Schema: public; Owner: eris
 --
