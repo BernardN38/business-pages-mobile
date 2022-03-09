@@ -194,10 +194,11 @@ def get_single_user(current_user, id):
 def update_user(current_user, id):
     excluded = ['password', 'username', 'is_admin']
     existing_user = User.query.get(current_user.id)
-    password = request.form['password']
+    password = request.form.get('password')
+    if not password:
+        return jsonify('unathorized'),401
     for k, v in request.form.items():
         if k in excluded:
-            print(k)
             continue
         else:
             setattr(existing_user, k, v)
@@ -207,7 +208,7 @@ def update_user(current_user, id):
     else:
         print('inccorect password')
         db.session.rollback()
-    print(existing_user.last_name)
+
     return jsonify(existing_user.serialize)
 
 # delete single user

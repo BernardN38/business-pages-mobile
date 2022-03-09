@@ -34,7 +34,6 @@ def token_required(f, *args, **kwargs):
             return jsonify({
                 'message': 'Token is invalid !!'
             }), 401
-
         # returns the current logged in users contex to the routes
         return f(current_user, *args, **kwargs)
 

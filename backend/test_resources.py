@@ -197,12 +197,15 @@ class TestResources:
         assert response.json[0].get('username') == 'test_user'
         assert len(response.json) == 1
 
-    def test_get_users(self, client, app):
+    def test_update_user(self, client, app):
         client.set_cookie(key='Bearer', value=user_token, httponly=True,
                           samesite='None', secure=True, server_name='http://localhost:5000')
       
-        response = client.post('/api/user/1', data={'name':'patcheduser'})
+        response = client.post('/api/user/1', data={'first_name':'patcheduser', 'password':'test_password'})
         assert response.status_code == 200
-        assert response.json[0].get('user_id') == 1
-        assert response.json[0].get('username') == 'test_user'
-        assert len(response.json) == 1
+        assert response.json.get('user_id') == 1
+        assert response.json.get('first_name') == 'patcheduser'
+        
+        with app.app_context():
+            assert User.query.get(1).first_name == 'patcheduser'
+
