@@ -1,13 +1,13 @@
-.carousel-container {
+/* .carousel-container {
   padding-top: 0.5rem;
   display: flex;
   justify-content: center;
 
-}
+} */
 
-.carousel-img img {
+.carousel-img {
   width: 100%;
-  height: auto;
+  height: 250px;
 }
 
 .fadeOut {
@@ -18,3 +18,13 @@
     0% {opacity: 1;}
     100% {opacity: 0;} 
  } 
+
+@media only screen and (min-width: 800px) {
+  .slide {
+    width:50%;
+  }
+  .container-main{
+    display: flex;
+    justify-content: center;
+  }
+}

@@ -34,7 +34,7 @@ function BusinessHeader({ business, link }) {
     }
   },[business.business_reviews]);
   return (
-    <Container className="p-1">
+    <Box >
       <div className="business-header-main">
         <Stack direction="row" spacing={2}>
           <Avatar sx={{ height: "70px", width: "70px" }}>
@@ -80,7 +80,7 @@ function BusinessHeader({ business, link }) {
           </Box>
         </Stack>
       </div>
-    </Container>
+    </Box>
   );
 }
 
