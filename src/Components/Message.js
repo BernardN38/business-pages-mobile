@@ -19,7 +19,6 @@ export default function Message({ message }) {
   console.log(message);
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setReply({ [name]: value });
   };
   const handleClick = () => {

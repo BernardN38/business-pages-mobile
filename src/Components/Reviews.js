@@ -7,7 +7,7 @@ import { useSelector} from "react-redux";
 
 function Reviews() {
   const reviewList = useSelector((state) => state.reviews.reviewList);
-  const authMode = useSelector((state) => state.auth.authMode)
+  const authMode = useSelector((state) => state.auth.authMode);
   return (
     <Stack>
       {authMode === 'user' ? <ReviewModal />: ''}

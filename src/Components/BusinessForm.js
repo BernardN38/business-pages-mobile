@@ -25,11 +25,9 @@ export default function BusinessForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
-    console.log(data.get("business_type"));
     instance
       .post(`${config.serverUrl}/api/business/signup`, data)
       .then((resp) => {
-        console.log(resp.data)
         if (resp.status === 201) {
           navigate("/");
         }

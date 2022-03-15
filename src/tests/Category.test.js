@@ -1,22 +1,12 @@
 import React from "react";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import BusinessHeader from "../Components/BusinessHeader";
+import { render, screen } from "@testing-library/react";
+import Category from "../Components/Category";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import authReducer from "../reducers/authReducer";
-import businessReducer from "../reducers/businessReducer";
-import { combineReducers } from "redux";
+import rootReducer from "../reducers/rootReducer";
+import { Route, BrowserRouter } from "react-router-dom";
 
-//Combine all the sub reducers
-const rootReducer = combineReducers({
-  business: businessReducer,
-  auth: authReducer,
-});
-// Note: running cleanup afterEach is done automatically for you in @testing-library/react@9.0.0 or higher
-// unmount and cleanup DOM after the test is finished.
-afterEach(cleanup);
-
-it("Checkbox business header displays properly", async () => {
+it("Checkbox business page displays properly", async () => {
   const initialState = {
     auth: { authMode: "User" },
     business: {
@@ -36,16 +26,33 @@ it("Checkbox business header displays properly", async () => {
         carousel_images: [],
       },
     },
+    reviews: {
+      reviewList: [
+        {
+          body: "i love subway!",
+          rating: 4,
+          review_id: 215,
+          title: "Yummy!",
+          user_id: 1,
+          user_profile_image:
+            "https://cdnb.artstation.com/p/assets/images/images/001/390/295/large/ayhan-aydogan-sprmn.jpg?1445589563",
+        },
+      ],
+    },
   };
   const store = createStore(rootReducer, initialState);
   const Wrapper = ({ children }) => (
-    <Provider store={store}>{children}</Provider>
+    <Provider store={store}>
+        {children}
+    </Provider>
   );
-  render(<BusinessHeader business={initialState.business.business} />, {
+  render(<Category />, {
     wrapper: Wrapper,
+    route: "/category/food",
   });
-  console.log()
+
   expect(screen.getByText("subway")).toBeInTheDocument();
   expect(screen.getByText("eat fresh!")).toBeInTheDocument();
-  // expect(getByLabelText('description')).toBeTruthy();
+  expect(screen.getByText("Yummy!")).toBeInTheDocument();
+  expect(screen.getByText("i love subway!")).toBeInTheDocument();
 });

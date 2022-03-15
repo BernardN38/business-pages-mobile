@@ -71,15 +71,6 @@ export default function BasicTabs() {
             <Tab label="Info" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        {/* <TabPanel value={value} index={0}>
-          User Reviews
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          Services
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Business Info
-        </TabPanel> */}
       </Box>
       {tabs[value]}
     </div>

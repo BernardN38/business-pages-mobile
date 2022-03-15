@@ -45,7 +45,6 @@ export default function BusinessLogin() {
           })
         }
       }).catch((error) => {
-          console.log(error.response.data)
           setOpen(true)
       });
     

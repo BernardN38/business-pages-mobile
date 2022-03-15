@@ -44,7 +44,6 @@ export default function LoginForm() {
         }
       })
       .catch((error) => {
-        console.log(error.response.data);
         setOpen(true);
       });
   };
@@ -106,6 +105,7 @@ export default function LoginForm() {
               type="submit"
               fullWidth
               variant="contained"
+              id="submit"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In

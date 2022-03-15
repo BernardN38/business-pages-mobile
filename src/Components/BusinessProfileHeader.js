@@ -40,11 +40,6 @@ function BusinessProfileHeader() {
             src={businessProfile.profile_image_url}
           />
         </Box>
-        {/* <CardContent>
-          <Typography gutterBottom variant="h5" component="div" align="center">
-            {capitalize(businessProfile.name)}
-          </Typography>
-        </CardContent> */}
         <Stack direction="row">
           <div className="user-header-badge">
             Reviews: {businessProfile.business_reviews.length}

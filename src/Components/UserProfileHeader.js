@@ -8,7 +8,6 @@ import Stack from "@mui/material/Stack";
 import "../css/user-profile-header.css";
 
 function UserProfileHeader({ userData, rank }) {
-  console.log(userData)
   return (
     <Box
       display="flex"

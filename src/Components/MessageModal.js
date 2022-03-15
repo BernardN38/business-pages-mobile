@@ -53,9 +53,7 @@ export default function MessageModal({ open, setOpen }) {
         },
       })
       .then((resp) => {
-        console.log(resp);
       });
-    // handleClose();
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;

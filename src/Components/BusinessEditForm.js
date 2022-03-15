@@ -30,7 +30,6 @@ export default function BusinessEditForm() {
       .post(`${config.serverUrl}/api/user/${user.token.user_id}`, data)
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp.data, "code 200");
           navigate("/profile");
         }
       });

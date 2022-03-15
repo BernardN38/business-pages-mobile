@@ -41,12 +41,6 @@ export default function BusinessProfile() {
             }
           });
       }
-    // } else {
-    //   instance
-    //     .get(`${config.serverUrl}/api/user/${user.token.user_id}`)
-    //     .then((resp) => {
-    //       dispatch({ type: "SET_USER_DATA", payload: resp.data });
-    //     });
     }
   }, []);
   return (
