@@ -7,7 +7,7 @@ import rootReducer from "../reducers/rootReducer";
 import { BrowserRouter } from "react-router-dom";
 
 
-it("Checkbox homepage displays properly", async () => {
+it("homepage displays properly", async () => {
   const initialState = {
     auth: { authMode: "User" },
   };

@@ -7,7 +7,7 @@ import rootReducer from "../reducers/rootReducer";
 
 
 
-it("Checkbox business page displays properly", async () => {
+it("business page displays properly", async () => {
   const initialState = {
     auth: { authMode: "User" },
     business: {

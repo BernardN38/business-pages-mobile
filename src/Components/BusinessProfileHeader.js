@@ -44,7 +44,7 @@ function BusinessProfileHeader() {
           <div className="user-header-badge">
             Reviews: {businessProfile.business_reviews.length}
           </div>
-          <div className="user-header-badge">Average Rating {Math.round(rating * 100) / 100}</div>
+          <div className="user-header-badge">Average Rating: {Math.round(rating * 100) / 100}</div>
           <div className="user-header-badge"></div>
         </Stack>
       </Card>

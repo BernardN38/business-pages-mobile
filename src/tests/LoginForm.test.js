@@ -11,7 +11,7 @@ import { BrowserRouter } from "react-router-dom";
 
 
 
-it("Checkbox login page displays properly", async () => {
+it("login page displays properly", async () => {
   const initialState = {};
   const store = createStore(rootReducer, initialState);
   const Wrapper = ({ children }) => (

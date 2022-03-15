@@ -7,7 +7,7 @@ import rootReducer from "../reducers/rootReducer";
 import {BrowserRouter} from "react-router-dom";
 
 
-it("Checkbox business profile displays properly", async () => {
+it("business profile displays properly", async () => {
 
   const initialState = {
     auth: { authMode: "Business" },

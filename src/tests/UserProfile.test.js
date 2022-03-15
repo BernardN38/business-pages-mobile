@@ -8,7 +8,7 @@ import {BrowserRouter} from "react-router-dom";
 
 
 
-it("Checkbox user profile displays properly", async () => {
+it(" user profile displays properly", async () => {
 
   const initialState = {
     auth: { authMode: "User" },
